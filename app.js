@@ -14,14 +14,12 @@
 (function () {
   "use strict";
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-
   const els = {
-    hero:        $("#hero"),
-    form:        $("#search-form"),
-    input:       $("#search-input"),
-    suggestions: $("#suggestions"),
-    agentRoot:   $("#agent-root")
+    hero:        document.getElementById("hero"),
+    form:        document.getElementById("search-form"),
+    input:       document.getElementById("search-input"),
+    suggestions: document.getElementById("suggestions"),
+    agentRoot:   document.getElementById("agent-root")
   };
 
   let turnCount = 0;
@@ -268,12 +266,14 @@
   }
 
   /* ── Event wiring ──────────────────────────────────────────────── */
-  els.form.addEventListener("submit", (e) => {
+  /* The agent flow only exists on the homepage. Guard each listener so
+     this file is safe to load on the category page too. */
+  els.form?.addEventListener("submit", (e) => {
     e.preventDefault();
     ask(els.input.value);
   });
 
-  els.suggestions.addEventListener("click", (e) => {
+  els.suggestions?.addEventListener("click", (e) => {
     const btn = e.target.closest(".outlearn-hero__tag");
     if (!btn) return;
     /* The chip contains an SVG icon plus a label — strip the SVG before
@@ -295,7 +295,7 @@
    * clicking a card header opens that card. Active dot/card stay in sync.
    * Ask AI buttons inside cards fire the agent flow via data-ask-ai. */
   (function wireFaq() {
-    const faq = $("#faq");
+    const faq = document.getElementById("faq");
     if (!faq) return;
 
     const dots  = [...faq.querySelectorAll(".outlearn-faq__dot-item")];
@@ -336,8 +336,8 @@
    * proportionally to how far down the page they are. Click smooths
    * back to the top. */
   (function wireBackToTop() {
-    const btn  = $("#backToTop");
-    const ring = $("#backToTopRing");
+    const btn  = document.getElementById("backToTop");
+    const ring = document.getElementById("backToTopRing");
     if (!btn || !ring) return;
 
     const CIRC = 119.381;                 /* 2πr at r=19 */
@@ -371,14 +371,14 @@
    * trigger on close. Filter input live-hides non-matching links and
    * group labels. Group labels collapse/expand their nav lists. */
   (function wireSidebar() {
-    const sidebar       = $("#sidebar");
-    const overlay       = $("#sidebarOverlay");
-    const openBtn       = $("#menuBtn");
-    const closeBtn      = $("#sidebarClose");
-    const filterInput   = $("#sidebarFilter");
-    const filterClear   = $("#sidebarFilterClear");
-    const filterEmpty   = $("#sidebarFilterEmpty");
-    const nav           = $("#sidebarNav");
+    const sidebar       = document.getElementById("sidebar");
+    const overlay       = document.getElementById("sidebarOverlay");
+    const openBtn       = document.getElementById("menuBtn");
+    const closeBtn      = document.getElementById("sidebarClose");
+    const filterInput   = document.getElementById("sidebarFilter");
+    const filterClear   = document.getElementById("sidebarFilterClear");
+    const filterEmpty   = document.getElementById("sidebarFilterEmpty");
+    const nav           = document.getElementById("sidebarNav");
     if (!sidebar || !overlay || !openBtn) return;
 
     let lastFocus = null;
@@ -467,10 +467,39 @@
       filterInput.focus();
     });
 
+    /* Category page: grid ↔ list view toggle. Guarded so it's a no-op
+       on pages without the toggle. State persists in localStorage. */
+    (function wireCategoryView() {
+      const grid = document.getElementById("articlesGrid");
+      const buttons = document.querySelectorAll(".kb-view-toggle__btn[data-view]");
+      if (!grid || !buttons.length) return;
+
+      const VIEW_KEY = "outlearn-articles-view";
+      const saved = localStorage.getItem(VIEW_KEY);
+      if (saved === "grid" || saved === "list") applyView(saved);
+
+      buttons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          applyView(btn.dataset.view);
+          try { localStorage.setItem(VIEW_KEY, btn.dataset.view); } catch (_) {}
+        });
+      });
+
+      function applyView(view) {
+        grid.dataset.view = view;
+        buttons.forEach(b => {
+          const on = b.dataset.view === view;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+      }
+    })();
+
     /* Desktop collapse handle — toggles the persistent sidebar. The
        handle is the only desktop trigger; the hamburger is mobile-only.
        We persist the collapsed state so it survives reloads. */
-    const handle = $("#sidebarHandle");
+    const handle = document.getElementById("sidebarHandle");
     const STORAGE_KEY = "outlearn-sidebar-collapsed";
     if (localStorage.getItem(STORAGE_KEY) === "1") {
       document.body.classList.add("is-sidebar-collapsed");
@@ -490,8 +519,9 @@
     const inField = e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName);
     if (inField || e.target?.isContentEditable) return;
     if (e.key === "/" || (e.metaKey && e.key === "k")) {
+      if (!els.input) return;             /* not on the homepage */
       e.preventDefault();
-      els.hero.classList.remove("is-compact");
+      els.hero?.classList.remove("is-compact");
       els.input.focus();
     }
   });
@@ -511,6 +541,7 @@
 
   /* Initial render: if the URL already has ?q=, replay it on load.     */
   function hydrateFromUrl() {
+    if (!els.form) return;                /* not on the homepage */
     const params = new URL(window.location.href).searchParams;
     const q = params.get("q");
     const r = params.get("r");
