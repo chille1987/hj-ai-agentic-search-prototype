@@ -1,35 +1,35 @@
 /* ════════════════════════════════════════════════════════════════════════
- *  mock-data.js  — Fake request/response transcript for the agent search.
+ *  Helpjuice Knowledge Base New Agentic Search
  * ════════════════════════════════════════════════════════════════════════
  *
  *  HOW TO READ THIS FILE
  *  ─────────────────────
  *  Each block below is one **simulated request** to the future backend:
  *
- *      const questionN = "<the user's question>";
- *      const responseN = { ...what the backend should return... };
+ *  const questionN = "<the user's question>";
+ *  const responseN = { ...what the backend should return... };
  *
  *  Think of (questionN, responseN) as a recorded request/response pair.
  *  You can copy any responseN object straight into your real /agent/ask
  *  endpoint and the front-end will render it correctly with no changes.
  *
- *  RESPONSE SHAPE  (this IS the API contract — backend must match it)
- *  ──────────────────────────────────────────────────────────────────
- *      {
- *        id:        string,            // stable response id (e.g. "response-1") — used for permalinks
- *        question:  string,            // echo of the user's question
- *        plan:      PlanStep[],        // planning steps the UI ticks through
- *        answer:    string,            // markdown body. Citations written as [1], [2], [3]
- *        sources:   Source[],          // sources[i-1] is the article behind citation [i]
- *        followups: string[],          // 3 suggested follow-up questions (chips)
- *        confident: boolean            // false => UI renders "couldn't find a confident answer"
- *      }
+ *  RESPONSE SHAPE  (this IS the API contract — Helpjuice backend need to match it)
+ *  
+ *  {
+ *    id:        string,            // stable response id (e.g. "response-1")
+ *    question:  string,            // echo of the user's question
+ *    plan:      PlanStep[],        // planning steps the UI ticks through
+ *    answer:    string,            // markdown body. Citations written as [1], [2], [3]
+ *    sources:   Source[],          // sources[i-1] is the Helpjuice article behind citation [i]
+ *    followups: string[],          // 3 suggested follow-up questions
+ *    confident: boolean            // false => UI renders "couldn't find a confident answer"
+ *  }
  *
- *      PlanStep = { label: string, duration: number_ms, matchedTitles?: string[] }
- *      Source   = { id, title, category, excerpt, url }
+ *  PlanStep = { label: string, duration: number_ms, matchedTitles?: string[] }
+ *  Source = { id, title, category, excerpt, url }
  *
  *  WIRING UP THE REAL BACKEND
- *  ──────────────────────────
+ * 
  *  Replace ONLY the body of `window.mockSearch` at the bottom of this file
  *  with a `fetch("/agent/ask", …)` call. The UI doesn't care where the
  *  response comes from — only that it matches the shape above.
@@ -37,10 +37,7 @@
 
 
 
-/* ╔══════════════════════════════════════════════════════════════════════╗
-   ║   FAKE REQUEST/RESPONSE PAIR #1 — "How do I deploy my agent?"         ║
-   ╚══════════════════════════════════════════════════════════════════════╝ */
-
+/* Fake Request/response PAIR #1 - "How do I deploy my agent?" */
 const question1 = "How do I deploy my agent?";
 
 const response1 = {
@@ -49,15 +46,16 @@ const response1 = {
   confident: true,
 
   plan: [
-    { label: "Understanding your question",                          duration: 550 },
-    { label: 'Searching the knowledge base for "deploy agent"',      duration: 850,
-      matchedTitles: ["Deploying Your Agent", "Production Checklist", "Rollback & Versioning"] },
-    { label: "Reading 3 articles",                                   duration: 1100 },
-    { label: "Synthesizing answer",                                  duration: 1300 }
+    { label: "Understanding your question", duration: 550 },
+    {
+      label: 'Searching the knowledge base for "deploy agent"', duration: 850,
+      matchedTitles: ["Deploying Your Agent", "Production Checklist", "Rollback & Versioning"]
+    },
+    { label: "Reading 3 articles", duration: 2000 },
+    { label: "Synthesizing answer", duration: 1300 }
   ],
 
-  answer:
-`Before you ship, make sure your agent is connected to the right knowledge sources and that its **staging** environment behaves the way you want [1].
+  answer: `Before you ship, make sure your agent is connected to the right knowledge sources and that its environment behaves the way you want [1].
 
 ## Steps
 
@@ -68,15 +66,21 @@ const response1 = {
 Once live, your production agent gets its own URL and API key. If something looks wrong after the cut-over, you can **roll back to any previous version** from the agent's history tab — no redeploy needed [3].`,
 
   sources: [
-    { id: "kb-101", title: "Deploying Your Agent",  category: "Deploying Your Agent",
+    {
+      id: "kb-101", title: "Deploying Your Agent", category: "Deploying Your Agent",
       excerpt: "Step-by-step on promoting an agent from staging to production.",
-      url: "https://outlearntest.helpjuice.com/deploying/deploying-your-agent" },
-    { id: "kb-102", title: "Production Checklist",  category: "Deploying Your Agent",
+      url: "https://outlearntest.helpjuice.com/deploying/deploying-your-agent"
+    },
+    {
+      id: "kb-102", title: "Production Checklist", category: "Deploying Your Agent",
       excerpt: "What to verify before flipping the production switch.",
-      url: "https://outlearntest.helpjuice.com/deploying/production-checklist" },
-    { id: "kb-103", title: "Rollback & Versioning", category: "Deploying Your Agent",
+      url: "https://outlearntest.helpjuice.com/deploying/production-checklist"
+    },
+    {
+      id: "kb-103", title: "Rollback & Versioning", category: "Deploying Your Agent",
       excerpt: "Roll back a bad deploy and pin to a known-good agent version.",
-      url: "https://outlearntest.helpjuice.com/deploying/rollback" }
+      url: "https://outlearntest.helpjuice.com/deploying/rollback"
+    }
   ],
 
   followups: [
@@ -87,10 +91,7 @@ Once live, your production agent gets its own URL and API key. If something look
 };
 
 
-/* ╔══════════════════════════════════════════════════════════════════════╗
-   ║   FAKE REQUEST/RESPONSE PAIR #2 — "What are knowledge sources?"       ║
-   ╚══════════════════════════════════════════════════════════════════════╝ */
-
+/* FAKE Request/response PAIR #2 — "What are knowledge sources?" */
 const question2 = "What are knowledge sources?";
 
 const response2 = {
@@ -99,15 +100,17 @@ const response2 = {
   confident: true,
 
   plan: [
-    { label: "Understanding your question",                              duration: 500 },
-    { label: 'Searching the knowledge base for "knowledge sources"',     duration: 800,
-      matchedTitles: ["What is a Knowledge Source?", "Connecting URLs", "Uploading Files"] },
-    { label: "Reading 3 articles",                                       duration: 1000 },
-    { label: "Synthesizing answer",                                      duration: 1200 }
+    { label: "Understanding your question", duration: 500 },
+    {
+      label: 'Searching the knowledge base for "knowledge sources"', duration: 800,
+      matchedTitles: ["What is a Knowledge Source?", "Connecting URLs", "Uploading Files"]
+    },
+    { label: "Reading 3 articles", duration: 1000 },
+    { label: "Synthesizing answer", duration: 1200 }
   ],
 
   answer:
-`A **knowledge source** is anything your agent is allowed to read from when answering a question [1]. Sources are the agent's grounding — without them, you're just talking to a base model.
+    `A **knowledge source** is anything your agent is allowed to read from when answering a question [1]. Sources are the agent's grounding — without them, you're just talking to a base model.
 
 OutlearnTest supports three flavors:
 
@@ -118,15 +121,21 @@ OutlearnTest supports three flavors:
 Each source is versioned, so when you update a doc the agent picks it up on the next sync and old answers are re-evaluated.`,
 
   sources: [
-    { id: "kb-201", title: "What is a Knowledge Source?", category: "Knowledge Sources",
+    {
+      id: "kb-201", title: "What is a Knowledge Source?", category: "Knowledge Sources",
       excerpt: "The data your agent reads from — docs, URLs, and files.",
-      url: "https://outlearntest.helpjuice.com/knowledge-sources/overview" },
-    { id: "kb-202", title: "Connecting URLs",             category: "Knowledge Sources",
+      url: "https://outlearntest.helpjuice.com/knowledge-sources/overview"
+    },
+    {
+      id: "kb-202", title: "Connecting URLs", category: "Knowledge Sources",
       excerpt: "Crawl a website and keep it in sync with your KB.",
-      url: "https://outlearntest.helpjuice.com/knowledge-sources/urls" },
-    { id: "kb-203", title: "Uploading Files",             category: "Knowledge Sources",
+      url: "https://outlearntest.helpjuice.com/knowledge-sources/urls"
+    },
+    {
+      id: "kb-203", title: "Uploading Files", category: "Knowledge Sources",
       excerpt: "Bring PDFs, Markdown, and Word docs into your agent.",
-      url: "https://outlearntest.helpjuice.com/knowledge-sources/files" }
+      url: "https://outlearntest.helpjuice.com/knowledge-sources/files"
+    }
   ],
 
   followups: [
@@ -137,10 +146,7 @@ Each source is versioned, so when you update a doc the agent picks it up on the 
 };
 
 
-/* ╔══════════════════════════════════════════════════════════════════════╗
-   ║   FAKE REQUEST/RESPONSE PAIR #3 — "Getting started with agents"       ║
-   ╚══════════════════════════════════════════════════════════════════════╝ */
-
+/* FAKE Request/response PAIR #3 — "Getting started with agents" */
 const question3 = "How do I get started with Helpjuice agents?";
 
 const response3 = {
@@ -149,15 +155,17 @@ const response3 = {
   confident: true,
 
   plan: [
-    { label: "Understanding your question",                              duration: 500 },
-    { label: 'Searching the knowledge base for "getting started"',       duration: 800,
-      matchedTitles: ["Your First Agent", "Agent Concepts", "What is a Knowledge Source?"] },
-    { label: "Reading 3 articles",                                       duration: 1000 },
-    { label: "Synthesizing answer",                                      duration: 1250 }
+    { label: "Understanding your question", duration: 500 },
+    {
+      label: 'Searching the knowledge base for "getting started"', duration: 800,
+      matchedTitles: ["Your First Agent", "Agent Concepts", "What is a Knowledge Source?"]
+    },
+    { label: "Reading 3 articles", duration: 1000 },
+    { label: "Synthesizing answer", duration: 1250 }
   ],
 
   answer:
-`Spinning up your first agent takes about five minutes [1].
+    `Spinning up your first agent takes about five minutes [1].
 
 ## The 4-step quick start
 
@@ -169,15 +177,21 @@ const response3 = {
 If anything in the editor looks unfamiliar, the **Agent Concepts** doc explains models, sources, actions, and policies in one place [2].`,
 
   sources: [
-    { id: "kb-301", title: "Your First Agent",            category: "Getting Started",
+    {
+      id: "kb-301", title: "Your First Agent", category: "Getting Started",
       excerpt: "Create, name, and ship an agent in under five minutes.",
-      url: "https://outlearntest.helpjuice.com/getting-started/first-agent" },
-    { id: "kb-302", title: "Agent Concepts",              category: "Getting Started",
+      url: "https://outlearntest.helpjuice.com/getting-started/first-agent"
+    },
+    {
+      id: "kb-302", title: "Agent Concepts", category: "Getting Started",
       excerpt: "Models, knowledge sources, actions, and policies.",
-      url: "https://outlearntest.helpjuice.com/getting-started/concepts" },
-    { id: "kb-201", title: "What is a Knowledge Source?", category: "Knowledge Sources",
+      url: "https://outlearntest.helpjuice.com/getting-started/concepts"
+    },
+    {
+      id: "kb-201", title: "What is a Knowledge Source?", category: "Knowledge Sources",
       excerpt: "The data your agent reads from — docs, URLs, and files.",
-      url: "https://outlearntest.helpjuice.com/knowledge-sources/overview" }
+      url: "https://outlearntest.helpjuice.com/knowledge-sources/overview"
+    }
   ],
 
   followups: [
@@ -188,10 +202,7 @@ If anything in the editor looks unfamiliar, the **Agent Concepts** doc explains 
 };
 
 
-/* ╔══════════════════════════════════════════════════════════════════════╗
-   ║   FAKE REQUEST/RESPONSE PAIR #4 — "What actions can my agent do?"     ║
-   ╚══════════════════════════════════════════════════════════════════════╝ */
-
+/* FAKE Request/response PAIR #4 — "What actions can my agent do?" */
 const question4 = "What actions can my agent perform?";
 
 const response4 = {
@@ -200,15 +211,17 @@ const response4 = {
   confident: true,
 
   plan: [
-    { label: "Understanding your question",                          duration: 500 },
-    { label: 'Searching the knowledge base for "actions"',           duration: 800,
-      matchedTitles: ["What Are Actions?", "Built-in Actions", "Custom Actions via HTTP"] },
-    { label: "Reading 3 articles",                                   duration: 1100 },
-    { label: "Synthesizing answer",                                  duration: 1200 }
+    { label: "Understanding your question", duration: 500 },
+    {
+      label: 'Searching the knowledge base for "actions"', duration: 800,
+      matchedTitles: ["What Are Actions?", "Built-in Actions", "Custom Actions via HTTP"]
+    },
+    { label: "Reading 3 articles", duration: 1100 },
+    { label: "Synthesizing answer", duration: 1200 }
   ],
 
   answer:
-`Actions are what turn your agent from a chatbot into something that actually *does* work [1].
+    `Actions are what turn your agent from a chatbot into something that actually *does* work [1].
 
 ## Built-in actions
 
@@ -219,15 +232,21 @@ Out of the box, your agent can send Slack messages, draft Gmail replies, file Li
 Anything else, you wire up yourself: expose an internal HTTP endpoint, describe its inputs/outputs in JSON Schema, and the agent learns to call it just like a built-in [3]. You can also gate actions behind approval policies so the agent has to ask a human before doing something destructive.`,
 
   sources: [
-    { id: "kb-401", title: "What Are Actions?",          category: "Actions",
+    {
+      id: "kb-401", title: "What Are Actions?", category: "Actions",
       excerpt: "Let your agent send emails, create tickets, and call APIs.",
-      url: "https://outlearntest.helpjuice.com/actions/overview" },
-    { id: "kb-402", title: "Built-in Actions",           category: "Actions",
+      url: "https://outlearntest.helpjuice.com/actions/overview"
+    },
+    {
+      id: "kb-402", title: "Built-in Actions", category: "Actions",
       excerpt: "Slack, Gmail, Linear, Zendesk, and HubSpot out of the box.",
-      url: "https://outlearntest.helpjuice.com/actions/built-in" },
-    { id: "kb-403", title: "Custom Actions via HTTP",    category: "Actions",
+      url: "https://outlearntest.helpjuice.com/actions/built-in"
+    },
+    {
+      id: "kb-403", title: "Custom Actions via HTTP", category: "Actions",
       excerpt: "Expose any internal endpoint as an action.",
-      url: "https://outlearntest.helpjuice.com/actions/custom" }
+      url: "https://outlearntest.helpjuice.com/actions/custom"
+    }
   ],
 
   followups: [
@@ -238,10 +257,7 @@ Anything else, you wire up yourself: expose an internal HTTP endpoint, describe 
 };
 
 
-/* ╔══════════════════════════════════════════════════════════════════════╗
-   ║   FAKE REQUEST/RESPONSE PAIR #5 — "Make my agent more accurate"       ║
-   ╚══════════════════════════════════════════════════════════════════════╝ */
-
+/* FAKE Request/response PAIR #5 — "Make my agent more accurate" */
 const question5 = "How do I make my agent more accurate?";
 
 const response5 = {
@@ -250,15 +266,17 @@ const response5 = {
   confident: true,
 
   plan: [
-    { label: "Understanding your question",                          duration: 550 },
-    { label: 'Searching the knowledge base for "agent accuracy"',    duration: 900,
-      matchedTitles: ["Improving Agent Accuracy", "Evaluations & Feedback", "What is a Knowledge Source?"] },
-    { label: "Reading 3 articles",                                   duration: 1100 },
-    { label: "Synthesizing answer",                                  duration: 1350 }
+    { label: "Understanding your question", duration: 550 },
+    {
+      label: 'Searching the knowledge base for "agent accuracy"', duration: 900,
+      matchedTitles: ["Improving Agent Accuracy", "Evaluations & Feedback", "What is a Knowledge Source?"]
+    },
+    { label: "Reading 3 articles", duration: 1100 },
+    { label: "Synthesizing answer", duration: 1350 }
   ],
 
   answer:
-`Accuracy in OutlearnTest is mostly a question of **grounding** and **iteration**, not picking a bigger model [1].
+    `Accuracy in OutlearnTest is mostly a question of **grounding** and **iteration**, not picking a bigger model [1].
 
 ## What actually moves the needle
 
@@ -269,15 +287,21 @@ const response5 = {
 If you've done all three and you're still missing answers, *then* try a stronger model — but in our data this is rarely the bottleneck.`,
 
   sources: [
-    { id: "kb-501", title: "Improving Agent Accuracy",   category: "Your Agents",
+    {
+      id: "kb-501", title: "Improving Agent Accuracy", category: "Your Agents",
       excerpt: "Use feedback, evals, and reranking to make answers sharper.",
-      url: "https://outlearntest.helpjuice.com/agents/accuracy" },
-    { id: "kb-502", title: "Evaluations & Feedback",     category: "Your Agents",
+      url: "https://outlearntest.helpjuice.com/agents/accuracy"
+    },
+    {
+      id: "kb-502", title: "Evaluations & Feedback", category: "Your Agents",
       excerpt: "Build a regression set from real user questions.",
-      url: "https://outlearntest.helpjuice.com/agents/evals" },
-    { id: "kb-201", title: "What is a Knowledge Source?",category: "Knowledge Sources",
+      url: "https://outlearntest.helpjuice.com/agents/evals"
+    },
+    {
+      id: "kb-201", title: "What is a Knowledge Source?", category: "Knowledge Sources",
       excerpt: "The data your agent reads from — docs, URLs, and files.",
-      url: "https://outlearntest.helpjuice.com/knowledge-sources/overview" }
+      url: "https://outlearntest.helpjuice.com/knowledge-sources/overview"
+    }
   ],
 
   followups: [
@@ -288,15 +312,7 @@ If you've done all three and you're still missing answers, *then* try a stronger
 };
 
 
-/* ╔══════════════════════════════════════════════════════════════════════╗
-   ║   FALLBACK — used when the user's question doesn't match any pair.    ║
-   ║   The backend's real /agent/ask endpoint should return something      ║
-   ║   in this same shape, with `confident: false`, when retrieval scores  ║
-   ║   are below threshold.                                                ║
-   ╚══════════════════════════════════════════════════════════════════════╝ */
-
-/* Tiny article library used ONLY by the fallback's keyword scoring.
-   The seeded responses above don't depend on this. */
+/* FALLBACK — used when the user's question doesn't match any pair. The backend's real /agent/ask endpoint should return something in this same shape, with `confident: false`, when retrieval scores are below threshold. */
 const FALLBACK_ARTICLES = [
   response1.sources[0], response1.sources[1], response1.sources[2],
   response2.sources[0], response2.sources[1], response2.sources[2],
@@ -322,14 +338,16 @@ function buildFallbackResponse(query) {
     question: query,
     confident: false,
     plan: [
-      { label: "Understanding your question",                                duration: 550 },
-      { label: `Searching the knowledge base for "${query.slice(0, 40)}"`,   duration: 850,
-        matchedTitles: ranked.map(a => a.title) },
-      { label: "Reading related articles",                                   duration: 1000 },
-      { label: "Checking confidence",                                        duration: 900 }
+      { label: "Understanding your question", duration: 550 },
+      {
+        label: `Searching the knowledge base for "${query.slice(0, 40)}"`, duration: 850,
+        matchedTitles: ranked.map(a => a.title)
+      },
+      { label: "Reading related articles", duration: 1000 },
+      { label: "Checking confidence", duration: 900 }
     ],
     answer:
-`I couldn't find a confident answer for **"${query}"** in the knowledge base.
+      `I couldn't find a confident answer for **"${query}"** in the knowledge base.
 
 Here are the closest related articles — one of them may help [1]:
 
@@ -348,11 +366,8 @@ If none of these look right, try rephrasing — for example, ask about a specifi
 }
 
 
-/* ╔══════════════════════════════════════════════════════════════════════╗
-   ║   REGISTRY — all pairs in one place, for the lookup below.            ║
-   ║   Adding a new pair: define questionN/responseN above, then push      ║
-   ║   { question: questionN, response: responseN } into this array.       ║
-   ╚══════════════════════════════════════════════════════════════════════╝ */
+/* REGISTRY — all pairs in one place, for the lookup below. Adding a new pair: define questionN/responseN above, then push 
+{ question: questionN, response: responseN } into this array. */
 
 window.MOCK_PAIRS = [
   { question: question1, response: response1 },
@@ -363,17 +378,12 @@ window.MOCK_PAIRS = [
 ];
 
 
-/* ╔══════════════════════════════════════════════════════════════════════╗
-   ║   window.mockSearch — the function the UI calls.                      ║
-   ║                                                                       ║
-   ║   Backend team: replace this body with a `fetch("/agent/ask", …)`     ║
-   ║   that returns the same response shape. Nothing else changes.         ║
-   ╚══════════════════════════════════════════════════════════════════════╝ */
-
+/* window.mockSearch — the function the UI calls. Helpjuice backend should replace this body. */
 window.mockSearch = async function (query, opts = {}) {
   /* Permalink path: if the caller knows the response id (from the URL),
      look it up directly so the user gets the exact same answer they
-     originally got, even if seeded questions are reordered later. */
+     originally got, even if seeded questions are reordered later.
+     I assume this will not be needed if this gets ported into Knowledge bases - it was more prototype purpose. */
   if (opts.responseId) {
     const pinned = window.MOCK_PAIRS.find(p => p.response.id === opts.responseId);
     if (pinned) return { ...pinned.response, question: query || pinned.question };
@@ -410,12 +420,9 @@ window.mockSearch = async function (query, opts = {}) {
 };
 
 
-/* ════════════════════════════════════════════════════════════════════════
- *  Tiny markdown renderer — kept here so we don't pull in a dependency.
- *  Supports: # / ## / ### headings, **bold**, *italic*, `code`,
- *  ordered/unordered lists, paragraphs, and [n] citations
- *  (rendered as <sup class="cite" data-cite="n">n</sup>).
- * ════════════════════════════════════════════════════════════════════════ */
+/*  Tiny markdown renderer — kept here so we don't pull in a dependency.
+    Supports: # / ## / ### headings, **bold**, *italic*, `code`,
+    ordered/unordered lists, paragraphs, and [n] citations (rendered as <sup class="cite" data-cite="n">n</sup>). */
 
 window.renderMarkdown = function (md) {
   const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
