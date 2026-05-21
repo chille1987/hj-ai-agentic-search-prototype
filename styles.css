@@ -40,6 +40,9 @@
   --shadow-lg: 0 24px 60px -20px rgba(15, 23, 42, 0.18), 0 8px 24px -10px rgba(15, 23, 42, 0.10);
 
   --font: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Sidebar width — used by desktop layout reflow */
+  --sidebar-w: 288px;
 }
 
 * { box-sizing: border-box; }
@@ -156,12 +159,422 @@ button { font-family: inherit; cursor: pointer; }
 }
 .outlearn-header-btn--primary:hover  { background: var(--brand-strong); }
 
-/* Mobile: show hamburger, hide Contact us, keep Login */
+/* Hamburger is shown on every viewport now that the sidebar is universal */
+.outlearn-menu-btn { display: inline-flex; }
+
+/* Mobile: shrink chrome, hide Contact us, keep Login */
 @media (max-width: 700px) {
-  .outlearn-menu-btn { display: inline-flex; }
   .outlearn-header-btn--ghost { display: none; }
-  .outlearn-header__inner { padding: 0 16px; height: 56px; }
+  .outlearn-header__inner { padding: 0 12px; height: 56px; gap: 8px; }
   .outlearn-logo img { height: 20px; }
+  .outlearn-header-btn--primary { height: 36px; padding: 0 12px; font-size: 13px; }
+}
+
+/* ── Sidebar (off-canvas drawer) ─────────────────────────────────────
+   Slides in from the left, used on every viewport. Backed by an
+   overlay that fades in. Both #sidebar and #sidebarOverlay get
+   .is-open when active. */
+
+.outlearn-sidebar-overlay {
+  position: fixed; inset: 0;
+  background: rgba(10, 10, 35, 0.42);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 90;
+  transition: opacity 0.25s ease;
+}
+.outlearn-sidebar-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.outlearn-sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: min(340px, 88vw);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  box-shadow: 8px 0 32px -8px rgba(15, 23, 42, 0.18);
+  z-index: 100;
+  display: flex; flex-direction: column;
+  transform: translateX(-102%);
+  transition: transform 0.32s cubic-bezier(.2,.7,.2,1);
+  /* Prevent content underneath from getting focus when closed */
+  visibility: hidden;
+}
+.outlearn-sidebar.is-open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.outlearn-sidebar__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.outlearn-sidebar__logo img {
+  display: block; height: 22px; width: auto;
+  user-select: none; -webkit-user-drag: none;
+}
+.outlearn-sidebar__close {
+  width: 36px; height: 36px;
+  display: inline-grid; place-items: center;
+  background: transparent;
+  color: var(--text-soft);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.outlearn-sidebar__close:hover {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--border);
+}
+.outlearn-sidebar__close:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Filter */
+.outlearn-sidebar-filter {
+  padding: 14px 16px 10px;
+  flex-shrink: 0;
+}
+.outlearn-sidebar-filter__bar {
+  display: flex; align-items: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 10px;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+.outlearn-sidebar-filter__bar:focus-within {
+  background: var(--surface);
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(61,122,94,0.08);
+}
+.outlearn-sidebar-filter__icon {
+  width: 16px; height: 16px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+.outlearn-sidebar-filter__bar:focus-within .outlearn-sidebar-filter__icon { color: var(--brand); }
+.outlearn-sidebar-filter__input {
+  flex: 1; min-width: 0;
+  height: 38px;
+  padding: 0 10px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  background: transparent;
+  color: var(--ink);
+  border: 0; outline: 0;
+}
+.outlearn-sidebar-filter__input::placeholder { color: var(--text-faint); }
+.outlearn-sidebar-filter__input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.outlearn-sidebar-filter__clear {
+  width: 22px; height: 22px;
+  display: inline-grid; place-items: center;
+  background: transparent;
+  color: var(--text-faint);
+  border: 0; border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+.outlearn-sidebar-filter__clear:hover { background: var(--border); color: var(--ink); }
+.outlearn-sidebar-filter__clear svg { width: 14px; height: 14px; }
+.outlearn-sidebar-filter__empty {
+  margin-top: 14px;
+  padding: 8px 4px;
+  font-size: 0.8125rem;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* Nav scroll area */
+.outlearn-sidebar__nav-wrap {
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  padding: 8px 10px 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+.outlearn-sidebar__nav-wrap::-webkit-scrollbar { width: 8px; }
+.outlearn-sidebar__nav-wrap::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 99px;
+}
+.outlearn-sidebar__nav-wrap::-webkit-scrollbar-thumb:hover { background: var(--border-2); }
+
+#sidebarNav { display: flex; flex-direction: column; gap: 2px; }
+
+/* Group (e.g. Getting Started) */
+.outlearn-nav-group { display: flex; flex-direction: column; }
+.outlearn-nav-group__label {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.outlearn-nav-group__label:hover { background: var(--brand-tint); color: var(--brand-strong); }
+.outlearn-nav-group__label:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+.outlearn-nav-group__leadicon {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  color: var(--text-soft);
+  transition: color 0.15s;
+}
+.outlearn-nav-group__label:hover .outlearn-nav-group__leadicon,
+.outlearn-nav-group.is-open .outlearn-nav-group__leadicon { color: var(--brand); }
+.outlearn-nav-group__name { flex: 1; min-width: 0; }
+.outlearn-nav-group__chevron {
+  width: 14px; height: 14px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.15s;
+}
+.outlearn-nav-group.is-open .outlearn-nav-group__chevron {
+  transform: rotate(90deg);
+  color: var(--text-soft);
+}
+
+.outlearn-nav-group__items {
+  display: flex; flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+  max-height: 1200px;                   /* generous so any group fits */
+  opacity: 1;
+  transition: max-height 0.3s cubic-bezier(.4,0,.2,1),
+              opacity 0.2s ease,
+              padding 0.2s ease;
+  padding: 2px 0 6px;
+}
+.outlearn-nav-group:not(.is-open) .outlearn-nav-group__items {
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.outlearn-nav-link {
+  display: flex; align-items: center;
+  gap: 8px;
+  padding: 7px 10px 7px 36px;
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  border-radius: 6px;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, padding-left 0.15s;
+}
+.outlearn-nav-link:hover {
+  background: var(--brand-tint);
+  color: var(--brand-strong);
+  padding-left: 40px;
+}
+.outlearn-nav-link.is-active {
+  background: var(--brand-tint-2);
+  color: var(--brand-strong);
+}
+.outlearn-nav-link:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: -2px;
+}
+.outlearn-nav-link__text {
+  flex: 1; min-width: 0;
+  /* Two-line clamp keeps long titles tidy */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Filter — hide elements that don't match */
+.outlearn-nav-link.is-hidden,
+.outlearn-nav-group.is-hidden { display: none; }
+
+/* Footer CTAs */
+.outlearn-sidebar__foot {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.outlearn-sidebar__cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 0.875rem; font-weight: 600;
+  border-radius: var(--r-sm);
+  border: 1px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.outlearn-sidebar__cta--ghost {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--border);
+}
+.outlearn-sidebar__cta--ghost:hover { background: var(--bg); border-color: var(--border-2); }
+.outlearn-sidebar__cta--primary {
+  background: var(--brand);
+  color: #fff;
+}
+.outlearn-sidebar__cta--primary:hover { background: var(--brand-strong); }
+.outlearn-sidebar__cta:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Lock body scroll when drawer open */
+body.is-sidebar-open { overflow: hidden; }
+
+/* ── Sidebar — persistent layout on desktop (≥ 1024px) ───────────────
+   The drawer pattern lives on phones. On wider screens the sidebar is
+   always visible and the rest of the page is pushed to the right so
+   it never sits underneath. A small chevron handle on the boundary
+   lets the user collapse it for more reading width. */
+
+.outlearn-sidebar-handle { display: none; }
+
+@media (min-width: 1024px) {
+  /* Hide mobile-only chrome */
+  .outlearn-menu-btn      { display: none !important; }
+  .outlearn-sidebar-overlay { display: none !important; }
+  .outlearn-sidebar__close  { display: none; }
+  /* Header owns the brand mark on desktop — hide the sidebar's logo block */
+  .outlearn-sidebar__head { display: none; }
+
+  /* Header spans the full viewport on desktop — logo flush left, Login
+     flush right, with breathing-room padding only. Matches the live
+     outlearntest chrome where the top bar is edge-to-edge. */
+  .outlearn-header__inner {
+    max-width: none;
+    padding: 0 28px;
+  }
+
+  /* Sidebar: persistent, sits BELOW the sticky header so the header's
+     bottom border can span the full viewport width uninterrupted. */
+  .outlearn-sidebar {
+    top: 65px;                        /* 64px header + 1px border */
+    transform: none;
+    visibility: visible;
+    box-shadow: none;
+    width: var(--sidebar-w);
+    transition: transform 0.32s cubic-bezier(.2,.7,.2,1);
+  }
+
+  /* Header's CTA pair already lives in the top bar — drop the duplicate
+     pair from the foot of the sidebar on desktop. */
+  .outlearn-sidebar__foot { display: none; }
+
+  /* Body scroll-lock isn't needed when the sidebar is part of the layout */
+  body.is-sidebar-open { overflow: auto; }
+
+  /* Reflow: shift the main column to the right of the sidebar. The
+     header stays full-width so the logo + actions span the top edge. */
+  .kb-main,
+  .outlearn-footer {
+    margin-left: var(--sidebar-w);
+    transition: margin-left 0.32s cubic-bezier(.2,.7,.2,1);
+  }
+
+  /* On desktop, group labels read as eyebrow-style section headers
+     (matches the live outlearntest sidebar) */
+  .outlearn-nav-group__label {
+    padding: 12px 10px 6px;
+    color: var(--text-soft);
+  }
+  .outlearn-nav-group__name {
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+  }
+  .outlearn-nav-group__leadicon { width: 14px; height: 14px; }
+  .outlearn-nav-group__chevron  { width: 12px; height: 12px; }
+
+  /* Items: slightly larger, less indent so they line up under the
+     section label rather than under the icon */
+  .outlearn-nav-link {
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .outlearn-nav-link:hover {
+    padding-left: 14px;
+  }
+
+  /* Collapse handle — a small floating chevron at the sidebar boundary.
+     Sits a touch below the header so it doesn't fight the sticky bar. */
+  .outlearn-sidebar-handle {
+    position: fixed;
+    top: 96px;                        /* 64px header + 32px breathing room */
+    left: calc(var(--sidebar-w) - 14px);
+    width: 28px; height: 28px;
+    z-index: 110;
+    display: grid; place-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text-soft);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+    cursor: pointer;
+    transition:
+      left 0.32s cubic-bezier(.2,.7,.2,1),
+      background 0.15s, color 0.15s, border-color 0.15s, transform 0.06s;
+  }
+  .outlearn-sidebar-handle svg {
+    width: 14px; height: 14px;
+    transition: transform 0.3s ease;
+  }
+  .outlearn-sidebar-handle:hover {
+    background: var(--brand-tint);
+    border-color: var(--brand-tint-3);
+    color: var(--brand);
+  }
+  .outlearn-sidebar-handle:active { transform: scale(0.94); }
+  .outlearn-sidebar-handle:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  /* Collapsed state — sidebar slides out, content takes the freed space */
+  body.is-sidebar-collapsed .outlearn-sidebar {
+    transform: translateX(-100%);
+  }
+  body.is-sidebar-collapsed .kb-main,
+  body.is-sidebar-collapsed .outlearn-footer {
+    margin-left: 0;
+  }
+  body.is-sidebar-collapsed .outlearn-sidebar-handle {
+    left: 14px;
+  }
+  body.is-sidebar-collapsed .outlearn-sidebar-handle svg {
+    transform: rotate(180deg);
+  }
+}
+
+/* Wide desktop — let the content breathe a touch more, sidebar stays
+   the same width so the article column gets the extra room */
+@media (min-width: 1440px) {
+  :root { --sidebar-w: 304px; }
 }
 
 .kb-sparkle-svg {
@@ -1088,31 +1501,225 @@ button { font-family: inherit; cursor: pointer; }
   }
 }
 
-/* ── Footer ───────────────────────────────────────────────────────── */
+/* ── Footer (mirrors live outlearn-footer markup) ──────────────────── */
 
-.kb-footer {
-  border-top: 1px solid var(--border);
+.outlearn-footer {
+  padding: 32px 24px 48px;
   background: var(--surface);
-  color: var(--text-soft);
-  font-size: 13px;
-  padding: 22px 0;
 }
-.kb-footer__inner {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap;
+.outlearn-footer .container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0;
 }
-.kb-footer__links { display: flex; align-items: center; gap: 16px; }
-.kb-footer__links a:hover { color: var(--ink); }
-.kb-footer__powered { color: var(--text-faint); }
+.outlearn-footer p,
+.outlearn-footer a {
+  font-size: 14px;
+  margin: 0;
+  color: #132742;
+}
+.outlearn-footer a {
+  text-decoration: none;
+  color: var(--brand);
+  transition: color 0.2s ease;
+}
+.outlearn-footer a:hover,
+.outlearn-footer a:focus-visible { color: var(--accent); }
+.outlearn-footer a:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
 
-/* ── Responsive bits ──────────────────────────────────────────────── */
+.outlearn-footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.outlearn-footer__first-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 24px;
+  border-top: 1px solid rgba(11, 20, 38, 0.18);
+}
+.outlearn-footer__powered {
+  flex: 1;
+  text-align: end;
+}
+
+.outlearn-footer__bottom-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
 
 @media (max-width: 700px) {
-  .kb-hero { padding: 48px 0 40px; }
-  .kb-hero__title { font-size: 32px; }
-  .kb-hero__sub { font-size: 15px; }
-  .kb-search { padding: 6px 6px 6px 16px; }
-  #search-input { font-size: 16px; }
-  .kb-search__submit { padding: 10px 14px; font-size: 14px; }
-  .kb-header__nav .kb-link { display: none; }
+  .outlearn-footer { padding: 24px 24px 36px; }
+  .outlearn-footer__first-row  { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .outlearn-footer__bottom-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .outlearn-footer__powered    { flex: none; text-align: left; }
 }
+
+/* ── Back-to-top button ────────────────────────────────────────────── */
+
+.outlearn-back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  background: var(--surface);
+  border: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
+}
+.outlearn-back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.outlearn-back-to-top:hover {
+  background: var(--brand);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(61, 122, 94, 0.3);
+}
+.outlearn-back-to-top:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.outlearn-back-to-top__ring {
+  position: absolute;
+  inset: 0;
+  width: 44px;
+  height: 44px;
+  transform: rotate(-90deg);              /* start the fill from 12 o'clock */
+  pointer-events: none;
+}
+.outlearn-back-to-top__ring-track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 2.5;
+  transition: opacity 0.15s;
+}
+.outlearn-back-to-top__ring-fill {
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.1s linear, opacity 0.15s;
+}
+.outlearn-back-to-top:hover .outlearn-back-to-top__ring-track,
+.outlearn-back-to-top:hover .outlearn-back-to-top__ring-fill { opacity: 0; }
+
+.outlearn-back-to-top__icon {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Responsive (mobile polish) ───────────────────────────────────── */
+
+/* Tablet — tighten gutters a touch */
+@media (max-width: 900px) {
+  .kb-turn { padding: 0 16px; margin-bottom: 24px; }
+  .outlearn-categories { padding: 56px 16px; }
+  .outlearn-faq { padding: 0 16px 48px; }
+}
+
+/* Phone — bigger surface for fingers, smaller chrome for content */
+@media (max-width: 700px) {
+  /* Hero: keep input at 16px so iOS doesn't zoom on focus */
+  .outlearn-hero { padding: 56px 16px 48px; }
+  .outlearn-hero__title { font-size: 1.75rem; line-height: 1.15; margin-bottom: 20px; }
+  .outlearn-hero__search-row { gap: 6px; }
+  .outlearn-hero__search-input { font-size: 16px; height: 46px; padding: 0 10px; }
+  .outlearn-hero__search-bar > svg { margin-left: 12px; }
+  .outlearn-ai-trigger-btn--hero { height: 46px; padding: 0 12px; }
+  .outlearn-ai-btn-text { display: none; }    /* sparkle only on phone */
+  .outlearn-ai-trigger-btn--hero { min-width: 46px; justify-content: center; }
+  .outlearn-hero__tags { gap: 8px; margin-top: 20px; }
+  .outlearn-hero__tag {
+    padding: 8px 12px;
+    font-size: 0.8125rem;
+    /* Wrap long suggestions instead of forcing overflow */
+    white-space: normal;
+  }
+
+  /* Categories: 1-col with comfortable spacing, no popovers */
+  .outlearn-categories { padding: 40px 16px; }
+  .outlearn-categories__grid { gap: 10px; }
+  .outlearn-cat-card { padding: 18px; }
+  .outlearn-cat-card__icon { width: 24px; height: 24px; margin-bottom: 12px; }
+  .outlearn-cat-card__title { font-size: 0.9375rem; }
+  .outlearn-cat-card__desc { font-size: 0.8125rem; }
+
+  /* Agent transcript */
+  .kb-turn { padding: 0 12px; margin-bottom: 20px; }
+  .kb-turn__question { gap: 10px; margin-bottom: 12px; }
+  .kb-turn__qicon { flex: 0 0 28px; height: 28px; font-size: 12px; }
+  .kb-turn__qtext { font-size: 18px; }
+  .kb-card { padding: 16px 16px; border-radius: var(--r-md); }
+  .kb-card__header { font-size: 12px; }
+  .kb-answer { font-size: 15px; line-height: 1.6; }
+  .kb-answer h1 { font-size: 19px; }
+  .kb-answer h2 { font-size: 17px; }
+  .kb-answer h3 { font-size: 15px; }
+  .kb-turn__body { gap: 16px; }
+  .kb-source { padding: 12px 14px; }
+  .kb-followups { margin-top: 16px; padding-top: 14px; }
+  .kb-followups__chip { padding: 9px 14px; font-size: 13px; }
+
+  /* FAQ */
+  .outlearn-faq__sticky { padding: 32px 0 40px; }
+  .outlearn-faq__heading { font-size: 1.5rem; }
+  .outlearn-faq-card__header { padding: 16px 0; }    /* taller tap target */
+  .outlearn-faq-card__title { font-size: 0.9375rem; }
+  .outlearn-faq-card__btn--ghost { padding: 8px 14px; }    /* 44px-ish target */
+
+  /* Footer */
+  .outlearn-footer { padding: 24px 16px 32px; }
+
+  /* Back-to-top — push above iOS safe-area, smaller chrome */
+  .outlearn-back-to-top {
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    right: 16px;
+    width: 40px; height: 40px;
+  }
+  .outlearn-back-to-top__ring { width: 40px; height: 40px; }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .outlearn-header-btn--primary { padding: 0 10px; }
+  .outlearn-hero__title { font-size: 1.5rem; }
+  .outlearn-cat-card { padding: 16px; }
+  .kb-card { padding: 14px; }
+}
+
+/* Prevent horizontal scroll from any oversized child */
+html, body { overflow-x: hidden; }

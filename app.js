@@ -331,6 +331,160 @@
     });
   })();
 
+  /* ── Back-to-top button ───────────────────────────────────────────
+   * Visible once the user has scrolled past the hero. The ring fills
+   * proportionally to how far down the page they are. Click smooths
+   * back to the top. */
+  (function wireBackToTop() {
+    const btn  = $("#backToTop");
+    const ring = $("#backToTopRing");
+    if (!btn || !ring) return;
+
+    const CIRC = 119.381;                 /* 2πr at r=19 */
+    ring.style.strokeDasharray = String(CIRC);
+
+    let ticking = false;
+    function update() {
+      ticking = false;
+      const doc    = document.documentElement;
+      const max    = (doc.scrollHeight - window.innerHeight) || 1;
+      const y      = window.scrollY || doc.scrollTop;
+      const pct    = Math.min(1, Math.max(0, y / max));
+      btn.classList.toggle("is-visible", y > 400);
+      ring.style.strokeDashoffset = String(CIRC * (1 - pct));
+    }
+    function onScroll() {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    update();
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  })();
+
+  /* ── Sidebar drawer ──────────────────────────────────────────────
+   * Opens from the hamburger; closes via overlay click, close-btn,
+   * or Escape. Locks body scroll while open, restores focus to the
+   * trigger on close. Filter input live-hides non-matching links and
+   * group labels. Group labels collapse/expand their nav lists. */
+  (function wireSidebar() {
+    const sidebar       = $("#sidebar");
+    const overlay       = $("#sidebarOverlay");
+    const openBtn       = $("#menuBtn");
+    const closeBtn      = $("#sidebarClose");
+    const filterInput   = $("#sidebarFilter");
+    const filterClear   = $("#sidebarFilterClear");
+    const filterEmpty   = $("#sidebarFilterEmpty");
+    const nav           = $("#sidebarNav");
+    if (!sidebar || !overlay || !openBtn) return;
+
+    let lastFocus = null;
+
+    function open() {
+      lastFocus = document.activeElement;
+      sidebar.classList.add("is-open");
+      overlay.classList.add("is-open");
+      overlay.hidden = false;
+      sidebar.setAttribute("aria-hidden", "false");
+      openBtn.setAttribute("aria-expanded", "true");
+      document.body.classList.add("is-sidebar-open");
+      /* Focus the filter input shortly after the transition starts */
+      setTimeout(() => filterInput?.focus(), 80);
+    }
+    function close() {
+      sidebar.classList.remove("is-open");
+      overlay.classList.remove("is-open");
+      sidebar.setAttribute("aria-hidden", "true");
+      openBtn.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("is-sidebar-open");
+      /* Hide overlay from AT once the fade-out finishes */
+      setTimeout(() => { overlay.hidden = true; }, 260);
+      lastFocus?.focus?.();
+    }
+
+    openBtn.addEventListener("click", open);
+    closeBtn?.addEventListener("click", close);
+    overlay.addEventListener("click", close);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && sidebar.classList.contains("is-open")) {
+        e.preventDefault();
+        close();
+      }
+    });
+
+    /* Auto-close on link click — feels right whether you've navigated
+       to an anchor on the same page or you're heading somewhere else. */
+    nav?.addEventListener("click", (e) => {
+      const link = e.target.closest(".outlearn-nav-link");
+      if (link) close();
+    });
+
+    /* Group collapse / expand */
+    nav?.addEventListener("click", (e) => {
+      const label = e.target.closest("[data-group-toggle]");
+      if (!label) return;
+      const group = label.closest(".outlearn-nav-group");
+      if (!group) return;
+      const willOpen = !group.classList.contains("is-open");
+      group.classList.toggle("is-open", willOpen);
+      label.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    });
+
+    /* Live filter */
+    function applyFilter() {
+      const q = (filterInput.value || "").trim().toLowerCase();
+      filterClear.hidden = !q;
+      let anyMatch = false;
+      nav.querySelectorAll(".outlearn-nav-group").forEach(group => {
+        const links = group.querySelectorAll(".outlearn-nav-link");
+        let groupHasMatch = false;
+        links.forEach(link => {
+          const text = link.textContent.trim().toLowerCase();
+          const hit = !q || text.includes(q);
+          link.classList.toggle("is-hidden", !hit);
+          if (hit) groupHasMatch = true;
+        });
+        /* Also match group label itself */
+        const labelText = group.querySelector(".outlearn-nav-group__name")?.textContent.trim().toLowerCase() || "";
+        if (q && labelText.includes(q)) {
+          links.forEach(l => l.classList.remove("is-hidden"));
+          groupHasMatch = true;
+        }
+        group.classList.toggle("is-hidden", !groupHasMatch);
+        /* Force-open groups while filtering so matches are visible */
+        if (q && groupHasMatch) group.classList.add("is-open");
+        if (groupHasMatch) anyMatch = true;
+      });
+      filterEmpty.hidden = !q || anyMatch;
+    }
+    filterInput?.addEventListener("input", applyFilter);
+    filterClear?.addEventListener("click", () => {
+      filterInput.value = "";
+      applyFilter();
+      filterInput.focus();
+    });
+
+    /* Desktop collapse handle — toggles the persistent sidebar. The
+       handle is the only desktop trigger; the hamburger is mobile-only.
+       We persist the collapsed state so it survives reloads. */
+    const handle = $("#sidebarHandle");
+    const STORAGE_KEY = "outlearn-sidebar-collapsed";
+    if (localStorage.getItem(STORAGE_KEY) === "1") {
+      document.body.classList.add("is-sidebar-collapsed");
+      handle?.setAttribute("aria-expanded", "false");
+      handle?.setAttribute("aria-label", "Expand sidebar");
+    }
+    handle?.addEventListener("click", () => {
+      const collapsed = document.body.classList.toggle("is-sidebar-collapsed");
+      handle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      handle.setAttribute("aria-label", collapsed ? "Expand sidebar" : "Collapse sidebar");
+      try { localStorage.setItem(STORAGE_KEY, collapsed ? "1" : "0"); } catch (_) {}
+    });
+  })();
+
   /* Slash to focus, like Helpjuice. Ignore when typing in any input. */
   document.addEventListener("keydown", (e) => {
     const inField = e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName);
