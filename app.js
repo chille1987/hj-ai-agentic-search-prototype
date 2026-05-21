@@ -341,15 +341,68 @@
       header?.addEventListener("click", () => setActive(i));
     });
 
-    /* Ask AI buttons → run the agent on the question */
-    faq.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-ask-ai]");
-      if (!btn) return;
-      e.preventDefault();
-      const q = btn.dataset.askAi;
-      if (q) ask(q);
-    });
   })();
+
+  /* ── Article TOC dock — active-section tracking ──────────────────
+   * Floating right-edge dock on the article page. As the user scrolls,
+   * the heading whose top is just above a fixed threshold becomes
+   * "active" — both its tick and its card link pick up .is-active. */
+  (function wireTocDock() {
+    const dock = document.getElementById("tocDock");
+    if (!dock) return;
+    const targets = dock.querySelectorAll("[data-toc-target]");
+    if (!targets.length) return;
+
+    /* Map of section id → array of dock elements (a tick + a link). */
+    const buckets = {};
+    targets.forEach(el => {
+      const id = el.dataset.tocTarget;
+      (buckets[id] = buckets[id] || []).push(el);
+    });
+    const ids = Object.keys(buckets);
+    const headings = ids.map(id => document.getElementById(id)).filter(Boolean);
+    if (!headings.length) return;
+
+    function setActive(id) {
+      Object.entries(buckets).forEach(([k, els]) => {
+        els.forEach(el => el.classList.toggle("is-active", k === id));
+      });
+    }
+
+    const ACTIVE_OFFSET = 140;            /* pixels from viewport top */
+    let ticking = false;
+    function update() {
+      ticking = false;
+      let activeId = null;
+      for (const h of headings) {
+        if (h.getBoundingClientRect().top <= ACTIVE_OFFSET) activeId = h.id;
+        else break;                       /* headings are in document order */
+      }
+      setActive(activeId || headings[0].id);
+    }
+    window.addEventListener("scroll", () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+    window.addEventListener("resize", () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    });
+    update();
+  })();
+
+  /* Global [data-ask-ai] handler — any button with that attribute
+     opens the spotlight (if present) and runs ask() with the value.
+     Used by FAQ "Ask AI" buttons and the in-article Ask AI panel. */
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-ask-ai]");
+    if (!btn) return;
+    e.preventDefault();
+    const q = btn.dataset.askAi;
+    if (!q) return;
+    if (openSpotlight) openSpotlight();
+    const input = document.getElementById("search-input");
+    if (input) input.value = q;
+    ask(q);
+  });
 
   /* ── Back-to-top button ───────────────────────────────────────────
    * Visible once the user has scrolled past the hero. The ring fills

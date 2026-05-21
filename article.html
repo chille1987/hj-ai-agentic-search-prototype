@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What is Outlearn? — OutlearnTest Knowledge Base</title>
+  <meta name="description"
+    content="Meet your new AI support agent — always on, always learning, always working.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header class="outlearn-header" role="banner">
+    <div class="outlearn-header__inner">
+
+      <div class="outlearn-header__left">
+        <button class="outlearn-menu-btn" type="button" id="menuBtn" aria-label="Open menu" aria-expanded="false"
+          aria-controls="sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="6" y2="6" />
+            <line x1="4" x2="20" y1="12" y2="12" />
+            <line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+        </button>
+
+        <a class="outlearn-logo" href="index.html" aria-label="OutlearnTest — go to homepage">
+          <img src="/outlearn-logo.png" alt="outlearn" width="120" height="28" loading="eager" decoding="async">
+        </a>
+      </div>
+
+      <button class="kb-search-trigger" id="searchTrigger" type="button"
+        aria-label="Open search" aria-haspopup="dialog" aria-controls="spotlight">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <span class="kb-search-trigger__label">Ask anything</span>
+        <span class="kb-search-trigger__kbd" aria-hidden="true">
+          <kbd>⌘</kbd><kbd>K</kbd>
+        </span>
+      </button>
+
+      <div class="outlearn-header__actions">
+        <a class="outlearn-header-btn outlearn-header-btn--ghost" href="/contact-us">Contact us</a>
+        <a class="outlearn-header-btn outlearn-header-btn--primary"
+          href="/users/sign_in?_subdomain=outlearntest">Login</a>
+      </div>
+
+    </div>
+  </header>
+
+  <div class="outlearn-sidebar-overlay" id="sidebarOverlay" hidden></div>
+
+  <button class="outlearn-sidebar-handle" id="sidebarHandle" type="button"
+    aria-label="Collapse sidebar" aria-controls="sidebar" aria-expanded="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+      stroke-linejoin="round" aria-hidden="true">
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  </button>
+
+  <div class="kb-layout">
+
+    <aside class="outlearn-sidebar" id="sidebar" aria-label="Knowledge base navigation" aria-hidden="true">
+
+      <div class="outlearn-sidebar__head">
+        <a class="outlearn-sidebar__logo" href="index.html" aria-label="OutlearnTest home">
+          <img
+            src="https://static.helpjuice.com/helpjuice_production/uploads/template/brand_image/34458/46894/Frame__14_.png"
+            alt="outlearn" height="22" loading="lazy" decoding="async">
+        </a>
+        <button class="outlearn-sidebar__close" type="button" id="sidebarClose" aria-label="Close menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="outlearn-sidebar-filter">
+        <div class="outlearn-sidebar-filter__bar">
+          <svg class="outlearn-sidebar-filter__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input class="outlearn-sidebar-filter__input" id="sidebarFilter" placeholder="Filter…" autocomplete="off"
+            spellcheck="false" aria-label="Filter navigation">
+          <button class="outlearn-sidebar-filter__clear" id="sidebarFilterClear" type="button" aria-label="Clear filter"
+            hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="outlearn-sidebar-filter__empty" id="sidebarFilterEmpty" hidden>No results</div>
+      </div>
+
+      <div class="outlearn-sidebar__nav-wrap" id="sidebarNavWrap">
+        <nav id="sidebarNav" aria-label="Categories">
+
+          <div class="outlearn-nav-group is-open">
+            <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+              <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="4" y="4" width="16" height="16" rx="2" />
+                <path d="M8 8h8M8 12h8M8 16h5" />
+              </svg>
+              <span class="outlearn-nav-group__name">Resources</span>
+              <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <div class="outlearn-nav-group__items">
+              <a class="outlearn-nav-link" href="#popular"><span class="outlearn-nav-link__text">Popular Articles</span></a>
+              <a class="outlearn-nav-link" href="#recent"><span class="outlearn-nav-link__text">Recent Articles</span></a>
+              <a class="outlearn-nav-link" href="#followed"><span class="outlearn-nav-link__text">Followed Articles</span></a>
+              <a class="outlearn-nav-link" href="#glossary"><span class="outlearn-nav-link__text">Glossary</span></a>
+            </div>
+          </div>
+
+          <div class="outlearn-nav-group is-open is-current">
+            <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true" aria-current="page">
+              <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+              </svg>
+              <span class="outlearn-nav-group__name">Getting Started</span>
+              <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <div class="outlearn-nav-group__items">
+              <a class="outlearn-nav-link is-active" href="article.html" aria-current="page"><span class="outlearn-nav-link__text">What is Outlearn?</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">How Outlearn Works</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Creating Your Account</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Onboarding Walkthrough</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Inviting Your Team</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">What Problem Are You Solving?</span></a>
+            </div>
+          </div>
+
+          <div class="outlearn-nav-group is-open">
+            <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+              <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+              </svg>
+              <span class="outlearn-nav-group__name">Your Agents</span>
+              <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <div class="outlearn-nav-group__items">
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">What is an AI Agent?</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Creating and Configuring Your Agent</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Writing Good Agent Instructions</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Choosing an AI Model</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Managing Multiple Agents</span></a>
+            </div>
+          </div>
+
+          <div class="outlearn-nav-group is-open">
+            <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+              <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+              </svg>
+              <span class="outlearn-nav-group__name">Knowledge Sources</span>
+              <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <div class="outlearn-nav-group__items">
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Understanding Sources</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Managing Sources</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Knowledge Base Integrations</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Cloud Storage</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Ticketing Systems</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Team Chats</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Manual Imports</span></a>
+            </div>
+          </div>
+
+          <div class="outlearn-nav-group is-open">
+            <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+              <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+              </svg>
+              <span class="outlearn-nav-group__name">Actions</span>
+              <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <div class="outlearn-nav-group__items">
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Understanding Actions</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Communication Actions</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Calendar &amp; Scheduling</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">CRM &amp; Sales</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Custom &amp; Advanced</span></a>
+            </div>
+          </div>
+
+          <div class="outlearn-nav-group is-open">
+            <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+              <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+              </svg>
+              <span class="outlearn-nav-group__name">Deploying Your Agent</span>
+              <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+            <div class="outlearn-nav-group__items">
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">How Deployment Works</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Customizing Your Chat Widget</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Setting Up the Email Channel</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Slack</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Microsoft Teams</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Google Chat</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Zendesk</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Intercom</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying via API</span></a>
+              <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Outlearn API Reference</span></a>
+            </div>
+          </div>
+
+        </nav>
+      </div>
+
+      <div class="outlearn-sidebar__foot">
+        <a class="outlearn-sidebar__cta outlearn-sidebar__cta--ghost" href="/contact-us">Contact us</a>
+        <a class="outlearn-sidebar__cta outlearn-sidebar__cta--primary" href="/users/sign_in?_subdomain=outlearntest">Login</a>
+      </div>
+
+    </aside>
+
+    <div class="kb-content">
+
+      <main class="kb-main kb-article">
+        <div class="kb-article__container">
+
+          <!-- Breadcrumb ─────────────────────────────────────────── -->
+          <nav class="kb-breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html">Help Center</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+            <a href="category.html">Getting Started</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+            <span aria-current="page">What is Outlearn?</span>
+          </nav>
+
+          <!-- Article header ────────────────────────────────────── -->
+          <header class="kb-article__head">
+            <h1 class="kb-article__title">What is Outlearn?</h1>
+            <p class="kb-article__lede">Meet your new AI support agent — always on, always learning, always working.</p>
+
+            <div class="kb-article__byline">
+              <span>Published <strong>May 4, 2026</strong></span>
+              <span class="kb-article__sep" aria-hidden="true">·</span>
+              <span>Last updated <strong>May 18, 2026</strong></span>
+              <span class="kb-article__sep" aria-hidden="true">·</span>
+              <span>2.2 min read</span>
+              <span class="kb-article__sep" aria-hidden="true">·</span>
+              <span>39 views</span>
+            </div>
+
+            <div class="kb-article__actions" role="group" aria-label="Article actions">
+              <button type="button" class="kb-article__action" aria-label="Follow article">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" aria-hidden="true">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span>Follow</span>
+              </button>
+              <button type="button" class="kb-article__action" aria-label="Print">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 6 2 18 2 18 9" />
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                  <rect width="12" height="8" x="6" y="14" />
+                </svg>
+                <span>Print</span>
+              </button>
+              <button type="button" class="kb-article__action" aria-label="Copy link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                </svg>
+                <span>Copy link</span>
+              </button>
+              <button type="button" class="kb-article__action" aria-label="Copy as Markdown">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 4h20v16H2z" />
+                  <path d="M6 16V8l4 4 4-4v8" />
+                  <path d="M18 12h-2l2-4 2 4h-2z" />
+                </svg>
+                <span>Copy as Markdown</span>
+              </button>
+            </div>
+          </header>
+
+          <!-- Floating TOC dock — desktop only (≥1024px) ──────────────
+               Vertical tick marks on the right; hovering expands a card
+               with full section names. Active section is tracked via
+               IntersectionObserver in app.js. -->
+          <aside class="kb-toc-dock" id="tocDock" aria-label="On this page">
+            <nav class="kb-toc-dock__card">
+              <div class="kb-toc-dock__head">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="3" x2="15" y1="5" y2="5" />
+                  <line x1="3" x2="21" y1="10" y2="10" />
+                  <line x1="3" x2="15" y1="15" y2="15" />
+                </svg>
+                <span>Table of Contents</span>
+              </div>
+              <ul class="kb-toc-dock__list" role="list">
+                <li><a class="kb-toc-dock__link" href="#what-outlearn-does" data-toc-target="what-outlearn-does">What Outlearn Does</a></li>
+                <li><a class="kb-toc-dock__link" href="#who-is-it-for" data-toc-target="who-is-it-for">Who Is It For?</a></li>
+                <li><a class="kb-toc-dock__link" href="#what-problems-does-it-solve" data-toc-target="what-problems-does-it-solve">What Problems Does It Solve?</a></li>
+                <li><a class="kb-toc-dock__link" href="#how-does-it-work-alongside-my-team" data-toc-target="how-does-it-work-alongside-my-team">How Does It Work Alongside My Team?</a></li>
+                <li><a class="kb-toc-dock__link" href="#best-practices" data-toc-target="best-practices">Best Practices</a></li>
+              </ul>
+            </nav>
+            <div class="kb-toc-dock__rail" aria-hidden="true">
+              <a class="kb-toc-dock__tick" href="#what-outlearn-does" data-toc-target="what-outlearn-does" tabindex="-1"></a>
+              <a class="kb-toc-dock__tick" href="#who-is-it-for" data-toc-target="who-is-it-for" tabindex="-1"></a>
+              <a class="kb-toc-dock__tick" href="#what-problems-does-it-solve" data-toc-target="what-problems-does-it-solve" tabindex="-1"></a>
+              <a class="kb-toc-dock__tick" href="#how-does-it-work-alongside-my-team" data-toc-target="how-does-it-work-alongside-my-team" tabindex="-1"></a>
+              <a class="kb-toc-dock__tick" href="#best-practices" data-toc-target="best-practices" tabindex="-1"></a>
+            </div>
+          </aside>
+
+          <!-- Inline Table of Contents (mobile / tablet) ──────────────── -->
+          <details class="kb-article__toc" open>
+            <summary>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <line x1="3" x2="15" y1="5" y2="5" />
+                <line x1="3" x2="21" y1="10" y2="10" />
+                <line x1="3" x2="15" y1="15" y2="15" />
+              </svg>
+              <span>Table of Contents</span>
+              <svg class="kb-article__toc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <ul>
+              <li><a href="#what-outlearn-does">What Outlearn Does</a></li>
+              <li><a href="#who-is-it-for">Who Is It For?</a></li>
+              <li><a href="#what-problems-does-it-solve">What Problems Does It Solve?</a></li>
+              <li><a href="#how-does-it-work-alongside-my-team">How Does It Work Alongside My Team?</a></li>
+              <li><a href="#best-practices">Best Practices</a></li>
+            </ul>
+          </details>
+
+          <!-- Article body ──────────────────────────────────────── -->
+          <article class="kb-article__body">
+            <p>Your team answered the same question fourteen times today. Tomorrow it will be fifteen. Meanwhile, your documentation is sitting in a tab nobody opens, doing nothing.</p>
+
+            <p>Outlearn fixes both of those problems at once.</p>
+
+            <p>It is an AI support agent that connects to everything you already have: your knowledge base, your documents, your website, your tools. It uses all of it to answer your customers' questions automatically, 24/7. It does not just answer. It can take action on a customer's behalf: book a meeting, send an email, look up an order, update a record. When a conversation needs a real person, it transfers smoothly to your team with full context, no repetition, and no dropped threads.</p>
+
+            <p>Teams use Outlearn to stop being the bottleneck in their own support operation. To give customers instant answers without growing headcount. To free their best people from the questions that do not need a human, so they can focus on the ones that do. And to finally turn a knowledge base full of articles into something that actively resolves problems.</p>
+
+            <p>You do not need engineers to set it up. If you can write an email, you can configure Outlearn.</p>
+
+            <p><strong>In this article, you'll learn:</strong></p>
+            <ul>
+              <li>What Outlearn does and who it's for</li>
+              <li>What problems it solves</li>
+              <li>How it fits alongside your existing support team</li>
+            </ul>
+
+            <h2 id="what-outlearn-does">What Outlearn Does</h2>
+            <p>Outlearn sits between your customers and your support team. When a user has a question, Outlearn answers it instantly — pulling from everything you connect to it: your knowledge base, documents, websites, internal tools, and more. If it can't help, it knows when to hand the conversation off to a real person.</p>
+            <p>It doesn't just answer — it acts. During a conversation, Outlearn can take actions on behalf of your users: check calendar availability, send a follow-up email, look up an order, trigger a process in your internal tools. All without the user ever leaving the chat.</p>
+            <p>You can deploy it as a chat widget on your website, connect it to your email inbox, or embed it inside tools your team already uses, like Slack or Zendesk.</p>
+
+            <h2 id="who-is-it-for">Who Is It For?</h2>
+            <p>Outlearn is built for businesses that:</p>
+            <ul>
+              <li>Get repetitive support questions and want to stop answering them manually</li>
+              <li>Have a knowledge base, help docs, or internal documentation they want to put to work</li>
+              <li>Want to offer 24/7 support without hiring more staff</li>
+              <li>Are already using Helpjuice and want to take their support one step further</li>
+            </ul>
+
+            <h2 id="what-problems-does-it-solve">What Problems Does It Solve?</h2>
+            <figure class="kb-article__table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Problem</th>
+                    <th>How Outlearn Helps</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Your team is overwhelmed with repetitive tickets</td>
+                    <td>Outlearn auto-resolves common questions before they reach your team</td>
+                  </tr>
+                  <tr>
+                    <td>Your knowledge base exists but customers don't use it</td>
+                    <td>Outlearn surfaces the right answer at the right moment, in the chat</td>
+                  </tr>
+                  <tr>
+                    <td>Support is only available during business hours</td>
+                    <td>Outlearn is available 24/7, on any channel you choose</td>
+                  </tr>
+                  <tr>
+                    <td>You can't afford to grow your support headcount</td>
+                    <td>One agent handles unlimited conversations simultaneously</td>
+                  </tr>
+                  <tr>
+                    <td>Your team wastes time drafting replies to simple tickets</td>
+                    <td>Outlearn's Copilot drafts replies inside Zendesk and Intercom for your agents to send in one click</td>
+                  </tr>
+                </tbody>
+              </table>
+            </figure>
+
+            <h2 id="how-does-it-work-alongside-my-team">How Does It Work Alongside My Team?</h2>
+            <p>Outlearn doesn't replace your support team — it handles the questions that don't need a human, so your team can focus on the ones that do.</p>
+            <p>When a conversation is too complex, or a user specifically asks for a person, Outlearn hands it off to the right human agent — with the full conversation context already included.</p>
+
+            <h2 id="best-practices">Best Practices</h2>
+            <ul>
+              <li>Don't think of Outlearn as a replacement for your team — think of it as the first line of support that handles the easy 80% so your team can focus on the meaningful 20%.</li>
+              <li>The more content you connect, the better your agent performs. Start with your most-used knowledge base articles and build from there.</li>
+              <li>Review your Content Gaps in Analytics regularly — it shows exactly what users are asking that your agent couldn't answer yet.</li>
+            </ul>
+          </article>
+
+          <!-- Ask AI panel ──────────────────────────────────────── -->
+          <aside class="kb-article__ask-ai">
+            <div class="kb-article__ask-ai-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <div class="kb-article__ask-ai-body">
+              <strong>Hitting a wall?</strong>
+              <p>Outlearn has read every word of this article. Ask it anything and get a direct answer — no searching, no guessing.</p>
+            </div>
+            <button type="button" class="kb-article__ask-ai-btn" data-ask-ai="Tell me about Outlearn">
+              <svg viewBox="0 0 18 18" width="14" height="14" aria-hidden="true">
+                <g fill="currentColor">
+                  <path d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z" />
+                  <polygon points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                </g>
+              </svg>
+              Ask AI
+            </button>
+          </aside>
+
+          <!-- Author footer ─────────────────────────────────────── -->
+          <footer class="kb-article__author">
+            <div class="kb-article__author-avatar" aria-hidden="true">HU</div>
+            <div class="kb-article__author-meta">
+              <span class="kb-article__author-label">Written by</span>
+              <span class="kb-article__author-name">Helpjuice Team</span>
+            </div>
+          </footer>
+
+        </div>
+      </main>
+
+      <footer class="outlearn-footer" role="contentinfo">
+        <div class="container">
+
+          <div class="outlearn-footer__first-row">
+            <p>&copy; 2026 &mdash; OutlearnTest. All Rights Reserved.</p>
+            <ul aria-label="Legal">
+              <li><a href="#terms">Terms</a></li>
+              <li><a href="#privacy">Privacy</a></li>
+            </ul>
+            <a class="outlearn-footer__powered" href="https://helpjuice.com/" rel="noopener">
+              Knowledge Base Software powered by Helpjuice
+            </a>
+          </div>
+
+          <div class="outlearn-footer__bottom-row">
+            <p>Follow us</p>
+            <ul class="outlearn-footer__social" aria-label="Social media">
+              <li><a href="#facebook" rel="noopener">Facebook</a></li>
+              <li><a href="#linkedin" rel="noopener">LinkedIn</a></li>
+              <li><a href="#twitter" rel="noopener">Twitter</a></li>
+            </ul>
+          </div>
+
+        </div>
+      </footer>
+
+    </div><!-- /.kb-content -->
+  </div><!-- /.kb-layout -->
+
+  <button type="button" class="outlearn-back-to-top" id="backToTop" aria-label="Back to top">
+    <svg class="outlearn-back-to-top__ring" viewBox="0 0 44 44" aria-hidden="true">
+      <circle class="outlearn-back-to-top__ring-track" cx="22" cy="22" r="19"></circle>
+      <circle class="outlearn-back-to-top__ring-fill" cx="22" cy="22" r="19" id="backToTopRing"
+        style="stroke-dasharray: 119.381; stroke-dashoffset: 119.381;"></circle>
+    </svg>
+    <svg class="outlearn-back-to-top__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m18 15-6-6-6 6" />
+    </svg>
+  </button>
+
+  <!-- Spotlight search overlay -->
+  <div class="kb-spotlight" id="spotlight" hidden role="presentation">
+    <div class="kb-spotlight__backdrop" data-spotlight-close></div>
+
+    <div class="kb-spotlight__panel" role="dialog" aria-modal="true" aria-label="Ask AI">
+
+      <button class="kb-spotlight__close" id="spotlightClose" type="button" aria-label="Close search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+        </svg>
+      </button>
+
+      <section class="kb-spotlight__hero" id="hero">
+        <form class="kb-spotlight__form" id="search-form" role="search" autocomplete="off">
+          <svg class="kb-spotlight__form-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input id="search-input" name="q" type="search" class="kb-spotlight__input"
+            placeholder="Ask anything about Outlearn…" aria-label="Ask anything about OutlearnTest"
+            autocomplete="off" spellcheck="false">
+        </form>
+
+        <div class="kb-spotlight__suggestions" id="suggestions" role="list" aria-label="Suggested questions">
+          <button type="button" class="outlearn-hero__tag" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            How do I deploy my agent?
+          </button>
+          <button type="button" class="outlearn-hero__tag" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            What are knowledge sources?
+          </button>
+          <button type="button" class="outlearn-hero__tag" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            How do I get started?
+          </button>
+        </div>
+      </section>
+
+      <section class="kb-spotlight__transcript" id="agent-root" aria-live="polite" aria-label="Agent answers"></section>
+
+    </div>
+  </div>
+
+  <script src="mock-data.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
