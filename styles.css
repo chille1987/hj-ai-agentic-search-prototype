@@ -70,7 +70,8 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 30;
-  backdrop-filter: saturate(180%) blur(8px);
+  /* backdrop-filter removed — header background is fully opaque so the
+     blur was invisible work that taxed paint on every scroll frame. */
 }
 .outlearn-header__inner {
   max-width: 1280px;
@@ -178,7 +179,6 @@ button { font-family: inherit; cursor: pointer; }
 .outlearn-sidebar-overlay {
   position: fixed; inset: 0;
   background: rgba(10, 10, 35, 0.42);
-  backdrop-filter: blur(2px);
   opacity: 0;
   pointer-events: none;
   z-index: 90;
@@ -2145,8 +2145,6 @@ body { overflow-x: hidden; }
 .kb-spotlight__backdrop {
   position: fixed; inset: 0;
   background: rgba(10, 10, 35, 0.5);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 .kb-spotlight__panel {
   position: relative;

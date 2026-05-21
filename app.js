@@ -175,6 +175,10 @@
     const answer = document.createElement("div");
     answer.className = "kb-answer is-streaming";
     card.appendChild(answer);
+    /* Bind citation handling ONCE per answer — see wireCitations.
+       Doing it here (rather than per token in streamAnswer) keeps the
+       streaming loop cheap. */
+    wireCitations(turnEl, answer);
 
     /* Sources rail (right column) */
     const rail = turnEl.querySelector(".kb-sources-rail");
@@ -197,17 +201,27 @@
     `;
   }
 
-  /* ── Stream the markdown answer chunk by chunk ─────────────────── */
+  /* ── Stream the markdown answer chunk by chunk ───────────────────
+   * Tokens still arrive at ~50/sec so the stream feels live, but we
+   * throttle the actual innerHTML re-render to once every RENDER_MS.
+   * A full markdown-to-HTML re-parse on every token was costing 50ms+
+   * each on long answers (frame rate dropped to ~15 fps). Throttling
+   * keeps the main thread free and brings streaming back to 60 fps. */
+  const RENDER_MS = 60;
   async function streamAnswer(turnEl, markdown) {
     const answerEl = turnEl.querySelector(".kb-answer");
     const tokens   = tokenize(markdown);
 
     let acc = "";
-    for (const t of tokens) {
-      acc += t;
-      answerEl.innerHTML = window.renderMarkdown(acc);
-      /* Re-attach citation handlers on each re-render */
-      wireCitations(turnEl, answerEl);
+    let lastRender = 0;
+    for (let i = 0; i < tokens.length; i++) {
+      acc += tokens[i];
+      const now = performance.now();
+      const isLast = i === tokens.length - 1;
+      if (isLast || now - lastRender >= RENDER_MS) {
+        answerEl.innerHTML = window.renderMarkdown(acc);
+        lastRender = now;
+      }
       await sleep(jitter(14, 30));
     }
     answerEl.classList.remove("is-streaming");
@@ -219,23 +233,35 @@
     return s.match(/\s+|\S+/g) || [s];
   }
 
-  /* ── Citation click → highlight + scroll the source card ───────── */
+  /* ── Citation click → highlight + scroll the source card ─────────
+   * Event delegation: one click + keydown handler on the answer
+   * container catches all .cite interactions, including ones added
+   * later when more markdown streams in. Previously we re-scanned and
+   * re-bound on every token; that was a noticeable chunk of the
+   * streaming cost. */
   function wireCitations(turnEl, root) {
-    root.querySelectorAll(".cite").forEach(c => {
-      if (c.dataset.bound) return;
-      c.dataset.bound = "1";
-      c.addEventListener("click", (e) => {
-        e.preventDefault();
-        const n = c.dataset.cite;
-        const target = turnEl.querySelector(`.kb-source[data-source-num="${n}"]`);
-        if (!target) return;
-        target.classList.add("is-highlighted");
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-        setTimeout(() => target.classList.remove("is-highlighted"), 1600);
-      });
-      c.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); c.click(); }
-      });
+    if (root.dataset.citesBound) return;
+    root.dataset.citesBound = "1";
+
+    function handle(c) {
+      const n = c.dataset.cite;
+      const target = turnEl.querySelector(`.kb-source[data-source-num="${n}"]`);
+      if (!target) return;
+      target.classList.add("is-highlighted");
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => target.classList.remove("is-highlighted"), 1600);
+    }
+
+    root.addEventListener("click", (e) => {
+      const c = e.target.closest(".cite");
+      if (!c) return;
+      e.preventDefault();
+      handle(c);
+    });
+    root.addEventListener("keydown", (e) => {
+      const c = e.target.closest(".cite");
+      if (!c) return;
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handle(c); }
     });
   }
 
