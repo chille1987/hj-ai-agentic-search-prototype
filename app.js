@@ -567,7 +567,6 @@
       document.body.classList.remove("is-spotlight-open");
       /* Cancel any pending debounced search */
       clearTimeout(debounceTimer);
-      setBusyState("idle");
       /* Hide from AT once the fade-out finishes */
       setTimeout(() => { spotlight.hidden = true; }, 220);
       /* Restore focus to whatever triggered the open — but never to an
@@ -592,26 +591,15 @@
        ask(). Enter still submits immediately via the form handler. If a
        search is already running, defer until it finishes — then if the
        query has changed in the meantime, run the latest. */
-    const busy = document.getElementById("spotlightBusy");
     const DEBOUNCE_MS = 500;
     let debounceTimer = null;
     let lastQuery = "";
 
-    function setBusyState(state) {
-      if (!busy) return;
-      busy.classList.toggle("is-pending", state === "pending");
-      busy.classList.toggle("is-busy",    state === "busy");
-    }
-
     async function fire(q) {
       const trimmed = q.trim();
-      if (!trimmed || trimmed === lastQuery) {
-        setBusyState("idle");
-        return;
-      }
+      if (!trimmed || trimmed === lastQuery) return;
       lastQuery = trimmed;
-      setBusyState("busy");
-      try { await ask(trimmed); } finally { setBusyState("idle"); }
+      await ask(trimmed);
       /* If the user kept typing while we were busy, run the latest */
       const current = input?.value.trim() || "";
       if (current && current !== lastQuery) fire(current);
@@ -620,11 +608,7 @@
     input?.addEventListener("input", () => {
       clearTimeout(debounceTimer);
       const value = input.value;
-      if (!value.trim()) {
-        setBusyState("idle");
-        return;
-      }
-      setBusyState("pending");
+      if (!value.trim()) return;
       debounceTimer = setTimeout(() => fire(value), DEBOUNCE_MS);
     });
   })();
