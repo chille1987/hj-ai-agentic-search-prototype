@@ -24,6 +24,8 @@
 
   let turnCount = 0;
   let isBusy    = false;
+  /* Snapshot the original title so we can restore it after a search */
+  const initialTitle = document.title;
 
   /* ── Public-ish: handle a question ─────────────────────────────── */
   async function ask(query, opts = {}) {
@@ -81,7 +83,7 @@
     els.agentRoot.innerHTML = "";
     els.hero.classList.remove("is-compact");
     turnCount = 0;
-    document.title = "OutlearnTest Knowledge Base — Ask AI";
+    document.title = initialTitle;
   }
 
   /* ── Build the markup for one turn ─────────────────────────────── */
@@ -280,14 +282,6 @@
        reading textContent so we don't pick up whitespace artifacts. */
     const label = (btn.innerText || btn.textContent).replace(/\s+/g, " ").trim();
     ask(label);
-  });
-
-  document.querySelectorAll("[data-focus-search]").forEach(b => {
-    b.addEventListener("click", () => {
-      els.hero.classList.remove("is-compact");
-      els.hero.scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(() => els.input.focus(), 250);
-    });
   });
 
   /* ── FAQ accordion + dot-nav ──────────────────────────────────────
@@ -514,15 +508,168 @@
     });
   })();
 
-  /* Slash to focus, like Helpjuice. Ignore when typing in any input. */
+  /* ── Spotlight overlay ──────────────────────────────────────────
+   * On inner pages (category, article) the search form lives inside a
+   * modal that opens from a header trigger pill. The modal contains the
+   * same #hero / #search-form / #search-input / #suggestions /
+   * #agent-root nodes as the homepage hero, so the existing ask() flow
+   * wires up to them automatically — no other glue needed. */
+  let openSpotlight = null;
+  let closeSpotlight = null;
+
+  (function wireSpotlight() {
+    const spotlight = document.getElementById("spotlight");
+    if (!spotlight) return;                /* no spotlight on this page */
+
+    const trigger  = document.getElementById("searchTrigger");
+    const closeBtn = document.getElementById("spotlightClose");
+    const input    = document.getElementById("search-input");
+    let lastFocus  = null;
+
+    openSpotlight = function () {
+      if (spotlight.classList.contains("is-open")) return;
+      lastFocus = document.activeElement;
+      spotlight.hidden = false;
+      /* next frame so the transition animates from the hidden state */
+      requestAnimationFrame(() => spotlight.classList.add("is-open"));
+      document.body.classList.add("is-spotlight-open");
+      setTimeout(() => input?.focus(), 80);
+    };
+    closeSpotlight = function () {
+      if (!spotlight.classList.contains("is-open")) return;
+      spotlight.classList.remove("is-open");
+      document.body.classList.remove("is-spotlight-open");
+      /* Cancel any pending debounced search */
+      clearTimeout(debounceTimer);
+      setBusyState("idle");
+      /* Hide from AT once the fade-out finishes */
+      setTimeout(() => { spotlight.hidden = true; }, 220);
+      /* Restore focus to whatever triggered the open — but never to an
+         input, since the homepage hero input's focus handler would
+         immediately reopen the spotlight. */
+      if (lastFocus && lastFocus.tagName !== "INPUT") lastFocus.focus?.();
+    };
+
+    trigger?.addEventListener("click", openSpotlight);
+    closeBtn?.addEventListener("click", closeSpotlight);
+    spotlight.addEventListener("click", (e) => {
+      if (e.target.closest("[data-spotlight-close]")) closeSpotlight();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && spotlight.classList.contains("is-open")) {
+        e.preventDefault();
+        closeSpotlight();
+      }
+    });
+
+    /* Debounced auto-search: 500ms after the user stops typing, fire
+       ask(). Enter still submits immediately via the form handler. If a
+       search is already running, defer until it finishes — then if the
+       query has changed in the meantime, run the latest. */
+    const busy = document.getElementById("spotlightBusy");
+    const DEBOUNCE_MS = 500;
+    let debounceTimer = null;
+    let lastQuery = "";
+
+    function setBusyState(state) {
+      if (!busy) return;
+      busy.classList.toggle("is-pending", state === "pending");
+      busy.classList.toggle("is-busy",    state === "busy");
+    }
+
+    async function fire(q) {
+      const trimmed = q.trim();
+      if (!trimmed || trimmed === lastQuery) {
+        setBusyState("idle");
+        return;
+      }
+      lastQuery = trimmed;
+      setBusyState("busy");
+      try { await ask(trimmed); } finally { setBusyState("idle"); }
+      /* If the user kept typing while we were busy, run the latest */
+      const current = input?.value.trim() || "";
+      if (current && current !== lastQuery) fire(current);
+    }
+
+    input?.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      const value = input.value;
+      if (!value.trim()) {
+        setBusyState("idle");
+        return;
+      }
+      setBusyState("pending");
+      debounceTimer = setTimeout(() => fire(value), DEBOUNCE_MS);
+    });
+  })();
+
+  /* ── Hero search → spotlight bridge (homepage) ───────────────────
+   * The homepage keeps its visible hero search area, but the area is
+   * just a styled trigger: clicking, focusing, submitting, or hitting
+   * a suggestion chip opens the spotlight and runs the agent flow in
+   * there. The hero never actually receives a value or focus. */
+  (function wireHeroTrigger() {
+    if (!openSpotlight) return;            /* no spotlight available */
+    const heroForm        = document.getElementById("hero-search-form");
+    const heroInput       = document.getElementById("hero-search-input");
+    const heroSuggestions = document.getElementById("hero-suggestions");
+    if (!heroForm) return;                 /* not on the homepage */
+
+    function runInSpotlight(query) {
+      openSpotlight();
+      const q = (query || "").trim();
+      if (!q) return;
+      const spotlightInput = document.getElementById("search-input");
+      if (spotlightInput) spotlightInput.value = q;
+      /* Fire ask() directly — no debounce, the user already chose. */
+      ask(q);
+    }
+
+    /* Mouse path: prevent focus from settling on the hero input. */
+    heroInput?.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      openSpotlight();
+    });
+    /* Keyboard path: tab lands focus here, defer to next tick to break
+       any same-frame focus loop, then blur + open. */
+    heroInput?.addEventListener("focus", () => {
+      setTimeout(() => {
+        heroInput.blur();
+        openSpotlight();
+      }, 0);
+    });
+
+    /* Enter on the hero form forwards whatever value the user typed. */
+    heroForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = heroInput?.value || "";
+      runInSpotlight(q);
+      if (heroInput) heroInput.value = "";
+    });
+
+    /* Suggestion chips run that suggestion in the spotlight. */
+    heroSuggestions?.addEventListener("click", (e) => {
+      const btn = e.target.closest(".outlearn-hero__tag");
+      if (!btn) return;
+      const label = (btn.innerText || btn.textContent).replace(/\s+/g, " ").trim();
+      runInSpotlight(label);
+    });
+  })();
+
+  /* Slash to focus / ⌘K. Open the spotlight if one exists; otherwise
+     focus the inline hero input on the homepage. Ignored when typing. */
   document.addEventListener("keydown", (e) => {
     const inField = e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName);
     if (inField || e.target?.isContentEditable) return;
     if (e.key === "/" || (e.metaKey && e.key === "k")) {
-      if (!els.input) return;             /* not on the homepage */
+      if (!els.input) return;             /* no search on this page */
       e.preventDefault();
-      els.hero?.classList.remove("is-compact");
-      els.input.focus();
+      if (openSpotlight) {
+        openSpotlight();
+      } else {
+        els.hero?.classList.remove("is-compact");
+        els.input.focus();
+      }
     }
   });
 
@@ -536,16 +683,25 @@
     const q = params.get("q");
     const r = params.get("r");
     resetToIdle();
-    if (q) ask(q, { fromHistory: true, responseId: r || undefined });
+    if (q) {
+      openSpotlight?.();
+      ask(q, { fromHistory: true, responseId: r || undefined });
+    } else {
+      closeSpotlight?.();
+    }
   });
 
-  /* Initial render: if the URL already has ?q=, replay it on load.     */
+  /* Initial render: if the URL already has ?q=, replay it on load. On
+     inner pages this also opens the spotlight so the result is visible. */
   function hydrateFromUrl() {
-    if (!els.form) return;                /* not on the homepage */
+    if (!els.form) return;                /* no search on this page */
     const params = new URL(window.location.href).searchParams;
     const q = params.get("q");
     const r = params.get("r");
-    if (q) ask(q, { fromHistory: true, responseId: r || undefined });
+    if (q) {
+      openSpotlight?.();
+      ask(q, { fromHistory: true, responseId: r || undefined });
+    }
   }
 
   hydrateFromUrl();

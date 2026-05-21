@@ -35,6 +35,20 @@
         </a>
       </div>
 
+      <!-- Compact header search — opens the spotlight overlay -->
+      <button class="kb-search-trigger" id="searchTrigger" type="button"
+        aria-label="Open search" aria-haspopup="dialog" aria-controls="spotlight">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <span class="kb-search-trigger__label">Ask anything</span>
+        <span class="kb-search-trigger__kbd" aria-hidden="true">
+          <kbd>⌘</kbd><kbd>K</kbd>
+        </span>
+      </button>
+
       <div class="outlearn-header__actions">
         <a class="outlearn-header-btn outlearn-header-btn--ghost" href="/contact-us">Contact us</a>
         <a class="outlearn-header-btn outlearn-header-btn--primary"
@@ -491,6 +505,71 @@
       <path d="m18 15-6-6-6 6" />
     </svg>
   </button>
+
+  <!-- Spotlight search overlay ───────────────────────────────────────
+       Reuses the same element IDs as the homepage hero (#hero,
+       #search-form, #search-input, #suggestions, #agent-root) so the
+       existing ask() flow in app.js wires up to it automatically.
+       category.html has no hero, so there's no collision. -->
+  <div class="kb-spotlight" id="spotlight" hidden role="presentation">
+    <div class="kb-spotlight__backdrop" data-spotlight-close></div>
+
+    <div class="kb-spotlight__panel" role="dialog" aria-modal="true" aria-label="Ask AI">
+
+      <button class="kb-spotlight__close" id="spotlightClose" type="button" aria-label="Close search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+        </svg>
+      </button>
+
+      <section class="kb-spotlight__hero" id="hero">
+        <form class="kb-spotlight__form" id="search-form" role="search" autocomplete="off">
+          <svg class="kb-spotlight__form-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input id="search-input" name="q" type="search" class="kb-spotlight__input"
+            placeholder="Ask anything about Outlearn…" aria-label="Ask anything about OutlearnTest"
+            autocomplete="off" spellcheck="false">
+          <!-- A pulsing dot replaces the Ask AI button — the search runs
+               automatically 500ms after the user stops typing. -->
+          <span class="kb-spotlight__busy" id="spotlightBusy" aria-hidden="true"></span>
+        </form>
+
+        <div class="kb-spotlight__suggestions" id="suggestions" role="list" aria-label="Suggested questions">
+          <button type="button" class="outlearn-hero__tag" role="listitem">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            How do I deploy my agent?
+          </button>
+          <button type="button" class="outlearn-hero__tag" role="listitem">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            What are knowledge sources?
+          </button>
+          <button type="button" class="outlearn-hero__tag" role="listitem">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            How do I get started?
+          </button>
+        </div>
+      </section>
+
+      <section class="kb-spotlight__transcript" id="agent-root" aria-live="polite" aria-label="Agent answers"></section>
+
+    </div>
+  </div>
 
   <script src="mock-data.js"></script>
   <script src="app.js"></script>
