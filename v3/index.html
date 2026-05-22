@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OutlearnTest Knowledge Base — v3 (Tabs)</title>
+  <meta name="description"
+    content="OutlearnTest Support Center — ask anything, get a synthesised answer from the knowledge base.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
+
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+  <div data-include="../shared/header.html" data-no-search="1"></div>
+
+  <div class="kb-layout">
+
+    <div data-include="../shared/sidebar.html"></div>
+
+    <div class="kb-content">
+
+      <main class="kb-main">
+
+        <section class="outlearn-hero outlearn-anim-fade-in" aria-labelledby="hero-title">
+          <div class="container">
+            <div class="outlearn-hero__inner">
+
+              <h1 class="outlearn-hero__title outlearn-anim-fade-up" id="hero-title">OutlearnTest Knowledge Base</h1>
+
+              <div class="outlearn-hero__search-wrap outlearn-anim-fade-up">
+
+                <form class="outlearn-hero__search-row" id="hero-search-form" role="search" autocomplete="off"
+                  aria-label="Knowledge base search">
+                  <div class="outlearn-hero__search-bar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="m21 21-4.3-4.3" />
+                    </svg>
+                    <input id="hero-search-input" name="q" type="search" class="outlearn-hero__search-input"
+                      placeholder="Ask anything about Outlearn…" aria-label="Ask anything about OutlearnTest"
+                      autocomplete="off" spellcheck="false">
+                    <div class="outlearn-hero__search-kbd" aria-hidden="true">
+                      <kbd>⌘</kbd><kbd>K</kbd>
+                    </div>
+                  </div>
+
+                </form>
+
+                <div class="outlearn-hero__tags" id="hero-suggestions" role="list" aria-label="Suggested questions">
+                  <button type="button" class="outlearn-hero__tag" role="listitem">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    How do I deploy my agent?
+                  </button>
+                  <button type="button" class="outlearn-hero__tag" role="listitem">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    What are knowledge sources?
+                  </button>
+                  <button type="button" class="outlearn-hero__tag" role="listitem">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    How do I get started?
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="outlearn-categories" aria-labelledby="categories-label">
+          <div class="container">
+            <h2 class="outlearn-section-label" id="categories-label">Browse by topic</h2>
+
+            <div class="outlearn-categories__grid">
+
+              <div class="outlearn-cat-card-wrap">
+                <a class="outlearn-cat-card" href="category.html">
+                  <div class="outlearn-cat-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                      stroke-linejoin="round">
+                      <path
+                        d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                  </div>
+                  <h3 class="outlearn-cat-card__title">Getting Started</h3>
+                  <p class="outlearn-cat-card__desc">Everything you need to go from signup to your first live agent.</p>
+                  <div class="outlearn-cat-card__meta">6 articles</div>
+                </a>
+                <div class="outlearn-cat-popover" aria-label="Getting Started — popular articles">
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    What is an AI Agent?
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Creating and Configuring Your Agent
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Writing Good Agent Instructions
+                  </a>
+                  <div class="outlearn-cat-popover__divider"></div>
+                  <a class="outlearn-cat-popover__all" href="category.html">
+                    See all
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="outlearn-cat-card-wrap">
+                <a class="outlearn-cat-card" href="category.html">
+                  <div class="outlearn-cat-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                      stroke-linejoin="round">
+                      <path
+                        d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                  </div>
+                  <h3 class="outlearn-cat-card__title">Your Agents</h3>
+                  <p class="outlearn-cat-card__desc">Understand, create, and configure the agent at the heart of Outlearn.</p>
+                  <div class="outlearn-cat-card__meta">5 articles</div>
+                </a>
+                <div class="outlearn-cat-popover" aria-label="Your Agents — popular articles">
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Agent Concepts
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Improving Agent Accuracy
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Evaluations &amp; Feedback
+                  </a>
+                  <div class="outlearn-cat-popover__divider"></div>
+                  <a class="outlearn-cat-popover__all" href="category.html">
+                    See all
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="outlearn-cat-card-wrap">
+                <a class="outlearn-cat-card" href="category.html">
+                  <div class="outlearn-cat-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                      stroke-linejoin="round">
+                      <path
+                        d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                  </div>
+                  <h3 class="outlearn-cat-card__title">Knowledge Sources</h3>
+                  <p class="outlearn-cat-card__desc">Connect your content so your agent can start answering questions.</p>
+                  <div class="outlearn-cat-card__meta">0 articles · 7 subcategories</div>
+                </a>
+                <div class="outlearn-cat-popover" aria-label="Knowledge Sources — popular articles">
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    What is a Knowledge Source?
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Connecting URLs
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Uploading Files
+                  </a>
+                  <div class="outlearn-cat-popover__divider"></div>
+                  <a class="outlearn-cat-popover__all" href="category.html">
+                    See all
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="outlearn-cat-card-wrap">
+                <a class="outlearn-cat-card" href="category.html">
+                  <div class="outlearn-cat-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                      stroke-linejoin="round">
+                      <path
+                        d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                  </div>
+                  <h3 class="outlearn-cat-card__title">Actions</h3>
+                  <p class="outlearn-cat-card__desc">Let your agent do things, not just say things.</p>
+                  <div class="outlearn-cat-card__meta">0 articles · 5 subcategories</div>
+                </a>
+                <div class="outlearn-cat-popover" aria-label="Actions — popular articles">
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    What Are Actions?
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Built-in Actions
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Custom Actions via HTTP
+                  </a>
+                  <div class="outlearn-cat-popover__divider"></div>
+                  <a class="outlearn-cat-popover__all" href="category.html">
+                    See all
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="outlearn-cat-card-wrap">
+                <a class="outlearn-cat-card" href="category.html">
+                  <div class="outlearn-cat-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                      stroke-linejoin="round">
+                      <path
+                        d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                  </div>
+                  <h3 class="outlearn-cat-card__title">Deploying Your Agent</h3>
+                  <p class="outlearn-cat-card__desc">Choose where your agent operates and get it in front of your users.</p>
+                  <div class="outlearn-cat-card__meta">10 articles · 2 subcategories</div>
+                </a>
+                <div class="outlearn-cat-popover" aria-label="Deploying — popular articles">
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Deploying Your Agent
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Production Checklist
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Rollback &amp; Versioning
+                  </a>
+                  <div class="outlearn-cat-popover__divider"></div>
+                  <a class="outlearn-cat-popover__all" href="category.html">
+                    See all
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="outlearn-cat-card-wrap">
+                <a class="outlearn-cat-card" href="category.html">
+                  <div class="outlearn-cat-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                      stroke-linejoin="round">
+                      <path
+                        d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                  </div>
+                  <h3 class="outlearn-cat-card__title">FAQ</h3>
+                  <p class="outlearn-cat-card__desc">Common questions about pricing, limits, and integrations.</p>
+                  <div class="outlearn-cat-card__meta">22 articles</div>
+                </a>
+                <div class="outlearn-cat-popover" aria-label="FAQ — popular articles">
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Pricing &amp; Plans
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Usage Limits
+                  </a>
+                  <a class="outlearn-cat-popover__item" href="article.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Integrations Overview
+                  </a>
+                  <div class="outlearn-cat-popover__divider"></div>
+                  <a class="outlearn-cat-popover__all" href="category.html">
+                    See all
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <section class="outlearn-faq" id="faq" aria-labelledby="faq-heading">
+          <div class="container">
+            <div class="outlearn-faq__sticky">
+
+              <div class="outlearn-faq__head">
+                <div class="outlearn-faq__eyebrow">FAQ</div>
+                <h2 class="outlearn-faq__heading" id="faq-heading">Frequently Asked <span>Questions</span></h2>
+              </div>
+
+              <div class="outlearn-faq__inner">
+
+                <div class="outlearn-faq__dots" role="tablist" aria-label="FAQ sections">
+                  <button type="button" class="outlearn-faq__dot-item is-active" data-target="faq-card-0" role="tab"
+                    aria-selected="true" aria-controls="faq-card-0">
+                    <span class="outlearn-faq__dot" aria-hidden="true"></span>
+                    <span class="outlearn-faq__dot-label">Outlearn</span>
+                  </button>
+                  <button type="button" class="outlearn-faq__dot-item" data-target="faq-card-1" role="tab"
+                    aria-selected="false" aria-controls="faq-card-1">
+                    <span class="outlearn-faq__dot" aria-hidden="true"></span>
+                    <span class="outlearn-faq__dot-label">Configuring</span>
+                  </button>
+                  <button type="button" class="outlearn-faq__dot-item" data-target="faq-card-2" role="tab"
+                    aria-selected="false" aria-controls="faq-card-2">
+                    <span class="outlearn-faq__dot" aria-hidden="true"></span>
+                    <span class="outlearn-faq__dot-label">Account</span>
+                  </button>
+                  <button type="button" class="outlearn-faq__dot-item" data-target="faq-card-3" role="tab"
+                    aria-selected="false" aria-controls="faq-card-3">
+                    <span class="outlearn-faq__dot" aria-hidden="true"></span>
+                    <span class="outlearn-faq__dot-label">AI Model</span>
+                  </button>
+                  <button type="button" class="outlearn-faq__dot-item" data-target="faq-card-4" role="tab"
+                    aria-selected="false" aria-controls="faq-card-4">
+                    <span class="outlearn-faq__dot" aria-hidden="true"></span>
+                    <span class="outlearn-faq__dot-label">AI Agent</span>
+                  </button>
+                  <button type="button" class="outlearn-faq__dot-item" data-target="faq-card-5" role="tab"
+                    aria-selected="false" aria-controls="faq-card-5">
+                    <span class="outlearn-faq__dot" aria-hidden="true"></span>
+                    <span class="outlearn-faq__dot-label">Actions</span>
+                  </button>
+                </div>
+
+                <div class="outlearn-faq__cards">
+
+                  <article class="outlearn-faq-card is-active" id="faq-card-0" role="tabpanel" aria-labelledby="faq-h-0">
+                    <button type="button" class="outlearn-faq-card__header" id="faq-h-0" aria-expanded="true"
+                      aria-controls="faq-body-0">
+                      <h3 class="outlearn-faq-card__title">How Outlearn Works</h3>
+                    </button>
+                    <div class="outlearn-faq-card__body" id="faq-body-0">
+                      <div class="outlearn-faq-card__body-inner">
+                        <div class="outlearn-faq-card__content">
+                          <p class="outlearn-faq-card__desc">The teams that set up Outlearn fastest are not the ones with the most technical experience. They are the ones who spent five minutes understanding how the pieces fit together before touching a single setting.</p>
+                          <div class="outlearn-faq-card__btns is-visible">
+                            <a href="article.html" class="outlearn-faq-card__btn outlearn-faq-card__btn--primary">
+                              Read Article
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                              </svg>
+                            </a>
+                            <button type="button" class="outlearn-faq-card__btn outlearn-faq-card__btn--ghost"
+                              data-ask-ai="How does Outlearn work?">
+                              <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true">
+                                <g fill="currentColor">
+                                  <path
+                                    d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z"
+                                    stroke="none" />
+                                  <polygon
+                                    points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75"
+                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5" />
+                                </g>
+                              </svg>
+                              Ask AI
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="outlearn-faq-card" id="faq-card-1" role="tabpanel" aria-labelledby="faq-h-1">
+                    <button type="button" class="outlearn-faq-card__header" id="faq-h-1" aria-expanded="false"
+                      aria-controls="faq-body-1">
+                      <h3 class="outlearn-faq-card__title">Creating and Configuring Your Agent</h3>
+                    </button>
+                    <div class="outlearn-faq-card__body" id="faq-body-1">
+                      <div class="outlearn-faq-card__body-inner">
+                        <div class="outlearn-faq-card__content">
+                          <p class="outlearn-faq-card__desc">An agent configured well sounds like your brand, stays on topic, and handles the situations your team deals with every day. A poorly configured agent frustrates users and creates more work than it saves.</p>
+                          <div class="outlearn-faq-card__btns">
+                            <a href="article.html" class="outlearn-faq-card__btn outlearn-faq-card__btn--primary">
+                              Read Article
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                              </svg>
+                            </a>
+                            <button type="button" class="outlearn-faq-card__btn outlearn-faq-card__btn--ghost"
+                              data-ask-ai="How do I configure my agent?">
+                              <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true">
+                                <g fill="currentColor">
+                                  <path
+                                    d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z"
+                                    stroke="none" />
+                                  <polygon
+                                    points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75"
+                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5" />
+                                </g>
+                              </svg>
+                              Ask AI
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="outlearn-faq-card" id="faq-card-2" role="tabpanel" aria-labelledby="faq-h-2">
+                    <button type="button" class="outlearn-faq-card__header" id="faq-h-2" aria-expanded="false"
+                      aria-controls="faq-body-2">
+                      <h3 class="outlearn-faq-card__title">Creating Your Account</h3>
+                    </button>
+                    <div class="outlearn-faq-card__body" id="faq-body-2">
+                      <div class="outlearn-faq-card__body-inner">
+                        <div class="outlearn-faq-card__content">
+                          <p class="outlearn-faq-card__desc">It is possible to go from no account to a live AI agent answering real customer questions in a single afternoon. This is the first step.</p>
+                          <div class="outlearn-faq-card__btns">
+                            <a href="article.html" class="outlearn-faq-card__btn outlearn-faq-card__btn--primary">
+                              Read Article
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                              </svg>
+                            </a>
+                            <button type="button" class="outlearn-faq-card__btn outlearn-faq-card__btn--ghost"
+                              data-ask-ai="How do I create my account?">
+                              <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true">
+                                <g fill="currentColor">
+                                  <path
+                                    d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z"
+                                    stroke="none" />
+                                  <polygon
+                                    points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75"
+                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5" />
+                                </g>
+                              </svg>
+                              Ask AI
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="outlearn-faq-card" id="faq-card-3" role="tabpanel" aria-labelledby="faq-h-3">
+                    <button type="button" class="outlearn-faq-card__header" id="faq-h-3" aria-expanded="false"
+                      aria-controls="faq-body-3">
+                      <h3 class="outlearn-faq-card__title">Choosing an AI Model</h3>
+                    </button>
+                    <div class="outlearn-faq-card__body" id="faq-body-3">
+                      <div class="outlearn-faq-card__body-inner">
+                        <div class="outlearn-faq-card__content">
+                          <p class="outlearn-faq-card__desc">Outlearn lets you pick the model that backs each agent. Bigger isn't always better — grounding, eval coverage, and source quality usually matter more than parameter count.</p>
+                          <div class="outlearn-faq-card__btns">
+                            <a href="article.html" class="outlearn-faq-card__btn outlearn-faq-card__btn--primary">
+                              Read Article
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                              </svg>
+                            </a>
+                            <button type="button" class="outlearn-faq-card__btn outlearn-faq-card__btn--ghost"
+                              data-ask-ai="How do I choose an AI model?">
+                              <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true">
+                                <g fill="currentColor">
+                                  <path
+                                    d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z"
+                                    stroke="none" />
+                                  <polygon
+                                    points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75"
+                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5" />
+                                </g>
+                              </svg>
+                              Ask AI
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="outlearn-faq-card" id="faq-card-4" role="tabpanel" aria-labelledby="faq-h-4">
+                    <button type="button" class="outlearn-faq-card__header" id="faq-h-4" aria-expanded="false"
+                      aria-controls="faq-body-4">
+                      <h3 class="outlearn-faq-card__title">What is an AI Agent?</h3>
+                    </button>
+                    <div class="outlearn-faq-card__body" id="faq-body-4">
+                      <div class="outlearn-faq-card__body-inner">
+                        <div class="outlearn-faq-card__content">
+                          <p class="outlearn-faq-card__desc">An AI agent is a model paired with knowledge sources and actions. It reads, reasons, and — when you let it — does things on your behalf.</p>
+                          <div class="outlearn-faq-card__btns">
+                            <a href="article.html" class="outlearn-faq-card__btn outlearn-faq-card__btn--primary">
+                              Read Article
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                              </svg>
+                            </a>
+                            <button type="button" class="outlearn-faq-card__btn outlearn-faq-card__btn--ghost"
+                              data-ask-ai="What is an AI agent?">
+                              <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true">
+                                <g fill="currentColor">
+                                  <path
+                                    d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z"
+                                    stroke="none" />
+                                  <polygon
+                                    points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75"
+                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5" />
+                                </g>
+                              </svg>
+                              Ask AI
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="outlearn-faq-card" id="faq-card-5" role="tabpanel" aria-labelledby="faq-h-5">
+                    <button type="button" class="outlearn-faq-card__header" id="faq-h-5" aria-expanded="false"
+                      aria-controls="faq-body-5">
+                      <h3 class="outlearn-faq-card__title">What Are Actions and What Can They Do?</h3>
+                    </button>
+                    <div class="outlearn-faq-card__body" id="faq-body-5">
+                      <div class="outlearn-faq-card__body-inner">
+                        <div class="outlearn-faq-card__content">
+                          <p class="outlearn-faq-card__desc">Actions let your agent send messages, file tickets, and call APIs. Built-in for Slack, Gmail, Linear, and Zendesk; custom actions plug in via any HTTP endpoint.</p>
+                          <div class="outlearn-faq-card__btns">
+                            <a href="article.html" class="outlearn-faq-card__btn outlearn-faq-card__btn--primary">
+                              Read Article
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                              </svg>
+                            </a>
+                            <button type="button" class="outlearn-faq-card__btn outlearn-faq-card__btn--ghost"
+                              data-ask-ai="What actions can my agent perform?">
+                              <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true">
+                                <g fill="currentColor">
+                                  <path
+                                    d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z"
+                                    stroke="none" />
+                                  <polygon
+                                    points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75"
+                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5" />
+                                </g>
+                              </svg>
+                              Ask AI
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <div data-include="../shared/footer.html"></div>
+
+    </div><!-- /.kb-content -->
+  </div><!-- /.kb-layout -->
+
+  <script src="../shared/include.js"></script>
+  <script src="../shared/plumbing.js"></script>
+  <script src="../mock-data.js"></script>
+  <script src="agent.js"></script>
+  <script>
+    includeChrome().then(() => {
+      initPlumbing();
+      initAgent();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<div class="outlearn-sidebar-overlay" id="sidebarOverlay" hidden></div>
+
+<button class="outlearn-sidebar-handle" id="sidebarHandle" type="button" aria-label="Collapse sidebar"
+  aria-controls="sidebar" aria-expanded="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+    stroke-linejoin="round" aria-hidden="true">
+    <path d="m15 18-6-6 6-6" />
+  </svg>
+</button>
+
+<aside class="outlearn-sidebar" id="sidebar" aria-label="Knowledge base navigation" aria-hidden="true">
+
+  <div class="outlearn-sidebar__head">
+    <a class="outlearn-sidebar__logo" href="index.html" aria-label="OutlearnTest home">
+      <img
+        src="https://static.helpjuice.com/helpjuice_production/uploads/template/brand_image/34458/46894/Frame__14_.png"
+        alt="outlearn" height="22" loading="lazy" decoding="async">
+    </a>
+    <button class="outlearn-sidebar__close" type="button" id="sidebarClose" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="outlearn-sidebar-filter">
+    <div class="outlearn-sidebar-filter__bar">
+      <svg class="outlearn-sidebar-filter__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+      <input class="outlearn-sidebar-filter__input" id="sidebarFilter" placeholder="Filter…" autocomplete="off"
+        spellcheck="false" aria-label="Filter navigation">
+      <button class="outlearn-sidebar-filter__clear" id="sidebarFilterClear" type="button" aria-label="Clear filter"
+        hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="outlearn-sidebar-filter__empty" id="sidebarFilterEmpty" hidden>No results</div>
+  </div>
+
+  <div class="outlearn-sidebar__nav-wrap" id="sidebarNavWrap">
+    <nav id="sidebarNav" aria-label="Categories">
+
+      <div class="outlearn-nav-group is-open" data-nav-group="resources">
+        <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+          <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <path d="M8 8h8M8 12h8M8 16h5" />
+          </svg>
+          <span class="outlearn-nav-group__name">Resources</span>
+          <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </button>
+        <div class="outlearn-nav-group__items">
+          <a class="outlearn-nav-link" href="#popular"><span class="outlearn-nav-link__text">Popular Articles</span></a>
+          <a class="outlearn-nav-link" href="#recent"><span class="outlearn-nav-link__text">Recent Articles</span></a>
+          <a class="outlearn-nav-link" href="#followed"><span class="outlearn-nav-link__text">Followed Articles</span></a>
+          <a class="outlearn-nav-link" href="#glossary"><span class="outlearn-nav-link__text">Glossary</span></a>
+        </div>
+      </div>
+
+      <div class="outlearn-nav-group is-open" data-nav-group="getting-started">
+        <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+          <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+          </svg>
+          <span class="outlearn-nav-group__name">Getting Started</span>
+          <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </button>
+        <div class="outlearn-nav-group__items">
+          <a class="outlearn-nav-link" href="article.html" data-nav-link="what-is-outlearn"><span class="outlearn-nav-link__text">What is Outlearn?</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">How Outlearn Works</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Creating Your Account</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Onboarding Walkthrough</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Inviting Your Team</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">What Problem Are You Solving?</span></a>
+        </div>
+      </div>
+
+      <div class="outlearn-nav-group is-open" data-nav-group="your-agents">
+        <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+          <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+          </svg>
+          <span class="outlearn-nav-group__name">Your Agents</span>
+          <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </button>
+        <div class="outlearn-nav-group__items">
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">What is an AI Agent?</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Creating and Configuring Your Agent</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Writing Good Agent Instructions</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Choosing an AI Model</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Managing Multiple Agents</span></a>
+        </div>
+      </div>
+
+      <div class="outlearn-nav-group is-open" data-nav-group="knowledge-sources">
+        <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+          <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+          </svg>
+          <span class="outlearn-nav-group__name">Knowledge Sources</span>
+          <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </button>
+        <div class="outlearn-nav-group__items">
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Understanding Sources</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Managing Sources</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Knowledge Base Integrations</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Cloud Storage</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Ticketing Systems</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Team Chats</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Manual Imports</span></a>
+        </div>
+      </div>
+
+      <div class="outlearn-nav-group is-open" data-nav-group="actions">
+        <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+          <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+          </svg>
+          <span class="outlearn-nav-group__name">Actions</span>
+          <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </button>
+        <div class="outlearn-nav-group__items">
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Understanding Actions</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Communication Actions</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Calendar &amp; Scheduling</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">CRM &amp; Sales</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Custom &amp; Advanced</span></a>
+        </div>
+      </div>
+
+      <div class="outlearn-nav-group is-open" data-nav-group="deploying">
+        <button class="outlearn-nav-group__label" type="button" data-group-toggle aria-expanded="true">
+          <svg class="outlearn-nav-group__leadicon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+          </svg>
+          <span class="outlearn-nav-group__name">Deploying Your Agent</span>
+          <svg class="outlearn-nav-group__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </button>
+        <div class="outlearn-nav-group__items">
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">How Deployment Works</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Customizing Your Chat Widget</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Setting Up the Email Channel</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Slack</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Microsoft Teams</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Google Chat</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Zendesk</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying to Intercom</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Deploying via API</span></a>
+          <a class="outlearn-nav-link" href="article.html"><span class="outlearn-nav-link__text">Outlearn API Reference</span></a>
+        </div>
+      </div>
+
+    </nav>
+  </div>
+
+  <div class="outlearn-sidebar__foot">
+    <a class="outlearn-sidebar__cta outlearn-sidebar__cta--ghost" href="/contact-us">Contact us</a>
+    <a class="outlearn-sidebar__cta outlearn-sidebar__cta--primary"
+      href="/users/sign_in?_subdomain=outlearntest">Login</a>
+  </div>
+
+</aside>

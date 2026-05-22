@@ -420,6 +420,66 @@ window.mockSearch = async function (query, opts = {}) {
 };
 
 
+/* ════════════════════════════════════════════════════════════════════════
+ *  Live KB keyword search — window.mockKbSearch
+ * ════════════════════════════════════════════════════════════════════════
+ *
+ *  The "instant" path. v1's spotlight calls this on every keystroke
+ *  (debounced ~300ms) to render the small dropdown of matching articles
+ *  before the user hits Enter to ask AI. v3's Search tab uses it too.
+ *
+ *  CONTRACT  (matches the AI sources[] shape, on purpose — same card)
+ *
+ *    window.mockKbSearch(query: string)
+ *      → Promise<Article[]>
+ *
+ *    Article = { id, title, category, excerpt, url }
+ *
+ *  Empty / whitespace query resolves to []. Result count is capped at 8.
+ *
+ *  WIRING UP THE REAL BACKEND
+ *
+ *  Replace ONLY the body of `window.mockKbSearch` below with a
+ *  `fetch("/kb/search?q=...", …).then(r => r.json())` call. The signature
+ *  (a Promise of Article[]) is the contract.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const KB_CORPUS = [
+  { id: "kb-1",  category: "Getting Started",    title: "What is Outlearn?",                          excerpt: "Meet your new AI support agent — always on, always learning." },
+  { id: "kb-2",  category: "Getting Started",    title: "How Outlearn Works",                         excerpt: "Five concepts. Full control. Everything clicks into place." },
+  { id: "kb-3",  category: "Getting Started",    title: "Creating Your Account",                      excerpt: "You're a few steps away from your first AI agent." },
+  { id: "kb-4",  category: "Getting Started",    title: "Onboarding Walkthrough",                     excerpt: "Your agent is five steps away from being live." },
+  { id: "kb-5",  category: "Getting Started",    title: "Inviting Your Team",                         excerpt: "Give teammates access so you can build and manage your agent together." },
+  { id: "kb-6",  category: "Your Agents",        title: "What is an AI Agent?",                       excerpt: "A model paired with knowledge sources and actions that reads, reasons, and acts." },
+  { id: "kb-7",  category: "Your Agents",        title: "Creating and Configuring Your Agent",        excerpt: "Set tone, scope, model, and guardrails so the agent sounds like your brand." },
+  { id: "kb-8",  category: "Your Agents",        title: "Writing Good Agent Instructions",            excerpt: "How to phrase prompts so your agent stays on topic and on brand." },
+  { id: "kb-9",  category: "Your Agents",        title: "Choosing an AI Model",                       excerpt: "Bigger isn't always better — grounding and source quality usually matter more." },
+  { id: "kb-10", category: "Knowledge Sources",  title: "Understanding Sources",                      excerpt: "What a knowledge source is, what it does, and how the agent uses it." },
+  { id: "kb-11", category: "Knowledge Sources",  title: "Managing Sources",                           excerpt: "Add, remove, and re-index the documents your agent draws from." },
+  { id: "kb-12", category: "Knowledge Sources",  title: "Knowledge Base Integrations",                excerpt: "Connect Helpjuice, Notion, Confluence, and more in a few clicks." },
+  { id: "kb-13", category: "Actions",            title: "Understanding Actions",                      excerpt: "Let your agent do things — send messages, file tickets, call APIs." },
+  { id: "kb-14", category: "Actions",            title: "Communication Actions",                      excerpt: "Built-in actions for Slack, Gmail, Linear, and Zendesk." },
+  { id: "kb-15", category: "Actions",            title: "Custom Actions via HTTP",                    excerpt: "Plug any HTTP endpoint into the agent as a custom action." },
+  { id: "kb-16", category: "Deploying Your Agent", title: "How Deployment Works",                     excerpt: "From a configured agent to a live deployment users can chat with." },
+  { id: "kb-17", category: "Deploying Your Agent", title: "Customizing Your Chat Widget",             excerpt: "Brand the widget — colours, copy, position, and avatar." },
+  { id: "kb-18", category: "Deploying Your Agent", title: "Deploying to Slack",                       excerpt: "Install the Slack app, pick channels, and route conversations." },
+  { id: "kb-19", category: "Deploying Your Agent", title: "Deploying to Zendesk",                     excerpt: "Drop Outlearn into Zendesk as a Copilot or front-line agent." },
+  { id: "kb-20", category: "Deploying Your Agent", title: "Outlearn API Reference",                   excerpt: "Endpoints, authentication, rate limits, and SDK snippets." }
+].map(a => ({ ...a, url: "article.html" }));
+
+window.mockKbSearch = async function (query) {
+  const q = (query || "").trim().toLowerCase();
+  if (!q) return [];
+  const matches = KB_CORPUS.filter(a =>
+    a.title.toLowerCase().includes(q) ||
+    a.excerpt.toLowerCase().includes(q) ||
+    a.category.toLowerCase().includes(q)
+  ).slice(0, 8);
+  /* Async signature so swapping the body for a real fetch is body-only. */
+  return matches;
+};
+
+
 /*  Tiny markdown renderer — kept here so we don't pull in a dependency.
     Supports: # / ## / ### headings, **bold**, *italic*, `code`,
     ordered/unordered lists, paragraphs, and [n] citations (rendered as <sup class="cite" data-cite="n">n</sup>). */
