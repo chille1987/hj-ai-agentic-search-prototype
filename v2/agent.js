@@ -19,36 +19,38 @@
           </svg>
         </button>
         <section class="kb-spotlight__hero" id="hero">
-          <div class="kb-spotlight__tabs" role="tablist" aria-label="Search mode">
-            <button class="kb-spotlight__tab" type="button" role="tab" data-tab="search" aria-selected="false">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" aria-hidden="true">
+          <div class="kb-spotlight__bar">
+            <form class="kb-spotlight__form" id="search-form" role="search" autocomplete="off">
+              <svg class="kb-spotlight__form-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.3-4.3" />
               </svg>
-              Search
-            </button>
-            <button class="kb-spotlight__tab" type="button" role="tab" data-tab="ask" aria-selected="true">
-              <svg viewBox="0 0 18 18" width="14" height="14" aria-hidden="true">
-                <g fill="currentColor">
-                  <path d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z"/>
-                  <polygon points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75"
-                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                </g>
-              </svg>
-              Ask AI
-            </button>
+              <input id="search-input" name="q" type="search" class="kb-spotlight__input"
+                placeholder="Ask anything about Outlearn…" aria-label="Search the knowledge base"
+                autocomplete="off" spellcheck="false">
+            </form>
+            <div class="kb-spotlight__tabs" role="tablist" aria-label="Search mode">
+              <button class="kb-spotlight__tab" type="button" role="tab" data-tab="search" aria-selected="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                Search
+              </button>
+              <button class="kb-spotlight__tab" type="button" role="tab" data-tab="ask" aria-selected="true">
+                <svg viewBox="0 0 18 18" width="14" height="14" aria-hidden="true">
+                  <g fill="currentColor">
+                    <path d="M5.658,2.99l-1.263-.421-.421-1.263c-.137-.408-.812-.408-.949,0l-.421,1.263-1.263,.421c-.204,.068-.342,.259-.342,.474s.138,.406,.342,.474l1.263,.421,.421,1.263c.068,.204,.26,.342,.475,.342s.406-.138,.475-.342l.421-1.263,1.263-.421c.204-.068,.342-.259.342-.474s-.138-.406-.342-.474Z"/>
+                    <polygon points="9.5 2.75 11.412 7.587 16.25 9.5 11.412 11.413 9.5 16.25 7.587 11.413 2.75 9.5 7.587 7.587 9.5 2.75"
+                      fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                  </g>
+                </svg>
+                Ask AI
+              </button>
+            </div>
           </div>
-          <form class="kb-spotlight__form" id="search-form" role="search" autocomplete="off">
-            <svg class="kb-spotlight__form-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <input id="search-input" name="q" type="search" class="kb-spotlight__input"
-              placeholder="Ask anything about Outlearn…" aria-label="Search the knowledge base"
-              autocomplete="off" spellcheck="false">
-          </form>
           <div class="kb-spotlight__suggestions" id="suggestions" data-mode="ask" role="list" aria-label="Suggested questions">
             <button type="button" class="outlearn-hero__tag" role="listitem">How do I deploy my agent?</button>
             <button type="button" class="outlearn-hero__tag" role="listitem">What are knowledge sources?</button>
@@ -100,7 +102,7 @@
       }
 
       await runPlan(turnEl, response.plan);
-      mountAnswerScaffolding(turnEl, response);
+      mountAnswerSlot(turnEl, response);
       await streamAnswer(turnEl, response.answer);
       mountFollowups(turnEl, response.followups);
     } catch (err) {
@@ -143,7 +145,6 @@
           </div>
           <div class="kb-plan" role="list"></div>
         </section>
-        <aside class="kb-sources-rail" hidden></aside>
       </div>
     `;
     els.agentRoot.appendChild(turn);
@@ -191,7 +192,7 @@
     turnEl.querySelector(".kb-pulse")?.classList.add("is-done");
   }
 
-  function mountAnswerScaffolding(turnEl, response) {
+  function mountAnswerSlot(turnEl, response) {
     const card = turnEl.querySelector(".kb-card");
 
     if (response.confident === false) {
@@ -201,34 +202,41 @@
       card.appendChild(banner);
     }
 
+    /* Stash for renderAnswer below: citation [N] tokens in the
+       markdown render as inline "view source" links whose href is
+       response.sources[N-1].url. No dedicated rail anymore. */
+    turnEl._sources = response.sources || [];
+
     const answer = document.createElement("div");
     answer.className = "kb-answer is-streaming";
     card.appendChild(answer);
-    wireCitations(turnEl, answer);
+  }
 
-    const rail = turnEl.querySelector(".kb-sources-rail");
-    rail.hidden = false;
-    rail.innerHTML = `
-      <div class="kb-sources">
-        <div class="kb-sources__title">Sources</div>
-        ${response.sources.map((s, i) => `
-          <a class="kb-source" data-source-num="${i + 1}" href="${s.url}" target="_blank" rel="noopener">
-            <div class="kb-source__row">
-              <div class="kb-source__num">${i + 1}</div>
-              <div class="kb-source__title">${escapeHtml(s.title)}</div>
-            </div>
-            <div class="kb-source__cat">${escapeHtml(s.category)}</div>
-            <p class="kb-source__excerpt">${escapeHtml(s.excerpt)}</p>
-            <span class="kb-source__open">Open article →</span>
-          </a>
-        `).join("")}
-      </div>
-    `;
+  /* Rewrite the citation chips produced by window.renderMarkdown
+     (<sup class="cite" data-cite="N">N</sup>) into inline anchor tags
+     that link to the cited article, with a small external-link icon. */
+  const CITE_RE = /<sup class="cite"[^>]*data-cite="(\d+)"[^>]*>\d+<\/sup>/g;
+  const CITE_ICON =
+    '<svg class="cite__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>' +
+    '<polyline points="15 3 21 3 21 9"/>' +
+    '<line x1="10" x2="21" y1="14" y2="3"/>' +
+    '</svg>';
+  function renderAnswerHTML(md, sources) {
+    return window.renderMarkdown(md).replace(CITE_RE, (_, n) => {
+      const idx = parseInt(n, 10) - 1;
+      const src = sources[idx];
+      if (!src) return "";
+      const title = escapeHtml(src.title || `Source ${n}`);
+      return `<a class="cite cite--inline" href="${src.url}" target="_blank" rel="noopener" aria-label="View source: ${title}">${CITE_ICON}view&nbsp;source</a>`;
+    });
   }
 
   const RENDER_MS = 60;
   async function streamAnswer(turnEl, markdown) {
     const answerEl = turnEl.querySelector(".kb-answer");
+    answerEl.setAttribute("aria-busy", "true");
+    const sources = turnEl._sources || [];
     const tokens = tokenize(markdown);
 
     let acc = "";
@@ -238,39 +246,16 @@
       const now = performance.now();
       const isLast = i === tokens.length - 1;
       if (isLast || now - lastRender >= RENDER_MS) {
-        answerEl.innerHTML = window.renderMarkdown(acc);
+        answerEl.innerHTML = renderAnswerHTML(acc, sources);
         lastRender = now;
       }
       await sleep(jitter(14, 30));
     }
     answerEl.classList.remove("is-streaming");
+    answerEl.setAttribute("aria-busy", "false");
   }
 
   function tokenize(s) { return s.match(/\s+|\S+/g) || [s]; }
-
-  function wireCitations(turnEl, root) {
-    if (root.dataset.citesBound) return;
-    root.dataset.citesBound = "1";
-    function handle(c) {
-      const n = c.dataset.cite;
-      const target = turnEl.querySelector(`.kb-source[data-source-num="${n}"]`);
-      if (!target) return;
-      target.classList.add("is-highlighted");
-      target.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => target.classList.remove("is-highlighted"), 1600);
-    }
-    root.addEventListener("click", (e) => {
-      const c = e.target.closest(".cite");
-      if (!c) return;
-      e.preventDefault();
-      handle(c);
-    });
-    root.addEventListener("keydown", (e) => {
-      const c = e.target.closest(".cite");
-      if (!c) return;
-      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handle(c); }
-    });
-  }
 
   function mountFollowups(turnEl, followups) {
     if (!followups || !followups.length) return;
@@ -299,12 +284,18 @@
 
   /* ── Keyword search flow (Search tab) ──────────────────────────── */
 
-  function renderSearchResults(query) {
-    const matches = window.mockKbSearch(query);
+  /* mockKbSearch returns a Promise (matches the real Rails endpoint
+     contract). searchRevision drops stale responses if the user is
+     typing faster than the network resolves. */
+  let searchRevision = 0;
+  async function renderSearchResults(query) {
     if (!query.trim()) {
       els.results.innerHTML = "";
       return;
     }
+    const rev = ++searchRevision;
+    const matches = await window.mockKbSearch(query);
+    if (rev !== searchRevision) return;
     if (!matches.length) {
       els.results.innerHTML = `
         <div class="kb-results__empty">
@@ -353,6 +344,9 @@
     if (tab === "search" && els.input?.value.trim()) {
       renderSearchResults(els.input.value);
     }
+    /* Returning to the input after a tab click should be the default —
+     * the user almost certainly wants to keep typing. */
+    setTimeout(() => els.input?.focus(), 0);
   }
 
   function wireTabs() {
