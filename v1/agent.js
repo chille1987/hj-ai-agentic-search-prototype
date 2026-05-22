@@ -260,16 +260,14 @@
       card.appendChild(banner);
     }
 
-    /* Stash the source list on the turn so citation chips can map
-       a [1]/[2] click to the article URL — the dedicated rail that
-       used to host these is gone (live KB search at the top covers
-       browsing the library). */
+    /* Stash the source list on the turn so renderAnswerHTML can map
+       a [N] citation to the cited article's URL — no on-page rail
+       anymore (the live KB search at the top covers browsing). */
     turnEl._sources = response.sources || [];
 
     const answer = document.createElement("div");
     answer.className = "kb-answer is-streaming";
     card.appendChild(answer);
-    wireCitations(turnEl, answer);
   }
 
   /* Throttled to ~16fps for re-render; tokens still consumed at full
@@ -279,9 +277,10 @@
   async function streamAnswer(turnEl, markdown) {
     const answerEl = turnEl.querySelector(".kb-answer");
     answerEl.setAttribute("aria-busy", "true");
+    const sources = turnEl._sources || [];
 
     if (reduceMotion) {
-      answerEl.innerHTML = window.renderMarkdown(markdown);
+      answerEl.innerHTML = renderAnswerHTML(markdown, sources);
     } else {
       const tokens = tokenize(markdown);
       let acc = "";
@@ -291,7 +290,7 @@
         const now = performance.now();
         const isLast = i === tokens.length - 1;
         if (isLast || now - lastRender >= RENDER_MS) {
-          answerEl.innerHTML = window.renderMarkdown(acc);
+          answerEl.innerHTML = renderAnswerHTML(acc, sources);
           lastRender = now;
         }
         await sleep(jitter(14, 30));
@@ -310,29 +309,25 @@
    * [3] Citations & follow-ups
    * ─────────────────────────────────────────────────────────────────── */
 
-  function wireCitations(turnEl, root) {
-    if (root.dataset.citesBound) return;
-    root.dataset.citesBound = "1";
-
-    /* No on-page rail anymore — citation chips open the cited
-       article in a new tab. */
-    function handle(c) {
-      const n = parseInt(c.dataset.cite, 10);
-      const source = turnEl._sources?.[n - 1];
-      if (!source?.url) return;
-      window.open(source.url, "_blank", "noopener");
-    }
-
-    root.addEventListener("click", (e) => {
-      const c = e.target.closest(".cite");
-      if (!c) return;
-      e.preventDefault();
-      handle(c);
-    });
-    root.addEventListener("keydown", (e) => {
-      const c = e.target.closest(".cite");
-      if (!c) return;
-      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handle(c); }
+  /* Rewrite the <sup class="cite" data-cite="N">N</sup> chips that
+     window.renderMarkdown produces into inline "view source" links
+     with an external-link icon. The href points at the cited article
+     so native middle-click / right-click "open in new tab" both work
+     — no JS click handler needed. */
+  const CITE_RE = /<sup class="cite"[^>]*data-cite="(\d+)"[^>]*>\d+<\/sup>/g;
+  const CITE_ICON =
+    '<svg class="cite__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>' +
+    '<polyline points="15 3 21 3 21 9"/>' +
+    '<line x1="10" x2="21" y1="14" y2="3"/>' +
+    '</svg>';
+  function renderAnswerHTML(md, sources) {
+    return window.renderMarkdown(md).replace(CITE_RE, (_, n) => {
+      const idx = parseInt(n, 10) - 1;
+      const src = sources[idx];
+      if (!src) return "";
+      const title = escapeHtml(src.title || `Source ${n}`);
+      return `<a class="cite cite--inline" href="${src.url}" target="_blank" rel="noopener" aria-label="View source: ${title}">${CITE_ICON}view&nbsp;source</a>`;
     });
   }
 
