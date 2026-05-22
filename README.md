@@ -19,7 +19,7 @@ share the same chrome and the same mock backend:
 | URL | What it explores |
 |---|---|
 | `/v1/` | **Spotlight modal.** Hero / header pill / `⌘K` opens a centered modal. Plan checklist, streamed markdown answer with `[1]` citation chips, source rail, follow-up chips, shareable `?q=…&r=…` URL. |
-| `/v2/` | **Inline answer (stub).** No modal — the hero search submits and the answer renders directly on the page beneath it. |
+| `/v2/` | **Tabs (Search + Ask AI).** Same spotlight, two modes — `Search` runs the classic live keyword KB match, `Ask AI` runs the agentic flow. One input, switch with a tab. |
 
 ## The agent flow (v1)
 
@@ -84,7 +84,7 @@ static server works.
 │   ├── category.html
 │   ├── article.html
 │   └── agent.js             # ask(), plan, streamAnswer, citations, sources, follow-ups, hotkeys, URL state
-└── v2/                      # inline-answer stub
+└── v2/                      # tabbed spotlight (Search | Ask AI)
     ├── index.html
     ├── category.html
     ├── article.html
@@ -122,7 +122,7 @@ cp -r v1 v3
 # add a card linking to /v3/ in the root index.html picker
 ```
 
-`v3` automatically picks up any future change to `shared/` — header
+The new version automatically picks up any future change to `shared/` — header
 tweaks, sidebar items, footer copy. The only thing you own per version
 is `agent.js` (and any page-level markup that differs, like an inline
 answer mount or a different hero).
